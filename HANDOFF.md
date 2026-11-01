@@ -3,7 +3,7 @@
 > Lo actualiza Codex (o quien trabaje) al terminar cada bloque. Si Codex se queda sin cuota, Cursor/OpenCode/modelo local retoman desde aquí.
 
 ## Estado actual
-- Fase / bloque en curso: Fase 1, bloque 1A completado.
+- Fase / bloque en curso: Fase 1, bloque 1B.
 - Último commit estable: `feat: create phase 1a design shell`.
 - ¿Compila `npm run build`?: Sí (verificado el 2026-10-31).
 
@@ -15,9 +15,10 @@
 - Shell con Inicio, Finanzas y Más; navegación inferior en móvil y lateral desde 1024 px.
 - Pruebas unitarias de las franjas horarias: 9 casos pasan.
 - Detector de Impeccable ejecutado sobre `src`: sin hallazgos.
+- Bloque 1B, tarea 1: esquema Dexie v1, campos de sincronización, categorías por defecto idempotentes y pruebas.
 
 ## Sigue (siguiente bloque exacto)
-- Fase 1, bloque 1B: PWA/offline, iconos maskable con hexágono, GitHub Pages, Dexie/categorías y `docs/DECISIONS.md`.
+- Bloque 1B, tarea 2: PWA/offline e iconos. Después, workflow de GitHub Pages y cierre documental del bloque.
 
 ## Cómo probar
 - `npm install`
