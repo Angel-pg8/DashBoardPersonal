@@ -57,3 +57,11 @@ Antes de dar una tarea por terminada: `npm run build`, `npm run lint` y `npm run
 - No cambiar los tokens de `DESIGN.md`.
 - No usar `localStorage` para datos de la app (solo preferencias muy chicas).
 - No usar `any` ni desactivar reglas del linter para que compile.
+
+## Protocolo de cuota (IMPORTANTE)
+La cuota de Codex es limitada y, si se agota, la tarea queda en pausa hasta el siguiente ciclo. Por eso:
+1. Trabaja en **bloques pequeños y terminables** (ver subfases en `docs/TASKS.md`). Nunca dejes varios archivos a medias.
+2. **Haz commit al terminar cada bloque** con el proyecto compilando (`npm run build` pasa). Nunca dejes el repo en estado roto.
+3. Después de cada bloque, actualiza `docs/HANDOFF.md`: qué está hecho, qué sigue, comandos para probar y decisiones. Debe bastar para que otra herramienta (Cursor, OpenCode o un modelo local) continúe sin Codex.
+4. No hagas refactors, pulidos ni mejoras que no estén en el bloque actual.
+5. Si notas que vas a quedarte sin margen, **detente en un punto limpio**, haz commit y deja el HANDOFF al día.

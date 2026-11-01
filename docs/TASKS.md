@@ -1,8 +1,12 @@
 # TASKS.md — Fases y criterios de aceptación
 
-Regla: una fase por sesión de Codex. Marcar `[x]` al terminar y no adelantar la siguiente.
+Regla: una fase por sesión de Codex, **dividida en bloques**. Cada bloque termina compilando y con commit, y se registra en `docs/HANDOFF.md`. Marcar `[x]` al terminar y no adelantar el siguiente.
+
+Si Codex se queda sin cuota a mitad de fase, el siguiente bloque sin marcar puede continuarse con Cursor/OpenCode o con un modelo local.
 
 ## Fase 1 — Base y diseño
+**Bloque 1A (Codex):** proyecto, tokens, fuente local, color por hora, componentes base y shell de navegación.
+**Bloque 1B (Codex o herramienta más barata):** PWA instalable/offline, iconos, despliegue a GitHub Pages, esquema de Dexie y `DECISIONS.md`.
 - [ ] Proyecto Vite + React + TS con Tailwind v4, ESLint y Vitest configurados.
 - [ ] `base` de Vite configurable (`VITE_BASE`) para GitHub Pages; workflow de despliegue en GitHub Actions.
 - [ ] Tokens de `DESIGN.md` en `@theme`; Inter instalada localmente.
