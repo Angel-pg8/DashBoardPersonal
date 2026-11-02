@@ -21,9 +21,9 @@ Si Codex se queda sin cuota a mitad de fase, el siguiente bloque sin marcar pued
 
 ## Fase 2A — Finanzas: núcleo
 ### 2A-1 Datos y lógica (sin interfaz)
-- [ ] Subir la versión del esquema de Dexie con migración (no borrar datos existentes) y agregar `accounts`, `transactions`, `categories`, `budgets`. Dinero en `amountCents`. Todos con `id`, `createdAt`, `updatedAt`, `deletedAt`, `synced`.
-- [ ] `src/lib/money.ts` (formato USD es-SV, texto ↔ centavos) y `src/lib/budget.ts` (sumas por periodo y categoría, saldo de cuenta, disponible, disponible por día) con pruebas en Vitest.
-- [ ] Datos iniciales: cuentas Efectivo, Banco y Ahorro; categorías base.
+- [x] Subir la versión del esquema de Dexie con migración (no borrar datos existentes) y agregar `accounts`, `transactions`, `categories`, `budgets`. Dinero en `amountCents`. Todos con `id`, `createdAt`, `updatedAt`, `deletedAt`, `synced`.
+- [x] `src/lib/money.ts` (formato USD es-SV, texto ↔ centavos) y `src/lib/budget.ts` (sumas por periodo y categoría, saldo de cuenta, disponible, disponible por día) con pruebas en Vitest.
+- [x] Datos iniciales: cuentas Efectivo, Banco y Ahorro; categorías base.
 **Aceptación:** `build`, `lint` y `test` pasan; la lógica cubre transferencias (no cuentan como gasto ni ingreso).
 
 ### 2A-2 Cuentas y registro rápido

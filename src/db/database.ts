@@ -1,7 +1,8 @@
 import Dexie, { type Table } from 'dexie'
-import type { Budget, Category, SyncFields, Transaction } from './types'
+import type { Account, Budget, Category, SyncFields, Transaction } from './types'
 
 export class PersonalDashboardDatabase extends Dexie {
+  accounts!: Table<Account, string>
   transactions!: Table<Transaction, string>
   categories!: Table<Category, string>
   budgets!: Table<Budget, string>
@@ -10,6 +11,14 @@ export class PersonalDashboardDatabase extends Dexie {
     super(name)
     this.version(1).stores({
       transactions: 'id, type, categoryId, date, updatedAt, deletedAt, synced',
+      categories: 'id, kind, name, [kind+name], sortOrder, updatedAt, deletedAt, synced',
+      budgets: 'id, month, categoryId, updatedAt, deletedAt, synced',
+    })
+
+    // v2 only adds indexes and a table. Existing v1 records remain untouched.
+    this.version(2).stores({
+      accounts: 'id, name, kind, archived, updatedAt, deletedAt, synced',
+      transactions: 'id, type, categoryId, accountId, transferAccountId, date, updatedAt, deletedAt, synced',
       categories: 'id, kind, name, [kind+name], sortOrder, updatedAt, deletedAt, synced',
       budgets: 'id, month, categoryId, updatedAt, deletedAt, synced',
     })

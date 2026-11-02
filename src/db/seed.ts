@@ -1,5 +1,5 @@
 import type { PersonalDashboardDatabase } from './database'
-import type { Category } from './types'
+import type { Account, Category } from './types'
 
 const defaults: { name: string; kind: Category['kind']; sortOrder: number }[] = [
   { name: 'Comida', kind: 'expense', sortOrder: 0 },
@@ -12,6 +12,12 @@ const defaults: { name: string; kind: Category['kind']; sortOrder: number }[] = 
   { name: 'Otros ingresos', kind: 'income', sortOrder: 1 },
 ]
 
+const defaultAccounts: { name: string; kind: Account['kind'] }[] = [
+  { name: 'Efectivo', kind: 'cash' },
+  { name: 'Banco', kind: 'bank' },
+  { name: 'Ahorro', kind: 'savings' },
+]
+
 export async function seedDefaultCategories(database: PersonalDashboardDatabase): Promise<void> {
   await database.transaction('rw', database.categories, async () => {
     for (const item of defaults) {
@@ -21,6 +27,25 @@ export async function seedDefaultCategories(database: PersonalDashboardDatabase)
       await database.categories.add({
         ...item,
         id: crypto.randomUUID(),
+        createdAt: now,
+        updatedAt: now,
+        synced: false,
+      })
+    }
+  })
+}
+
+export async function seedDefaultAccounts(database: PersonalDashboardDatabase): Promise<void> {
+  await database.transaction('rw', database.accounts, async () => {
+    for (const item of defaultAccounts) {
+      const existing = await database.accounts.where('name').equals(item.name).first()
+      if (existing) continue
+      const now = new Date().toISOString()
+      await database.accounts.add({
+        ...item,
+        id: crypto.randomUUID(),
+        openingBalanceCents: 0,
+        archived: false,
         createdAt: now,
         updatedAt: now,
         synced: false,

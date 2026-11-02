@@ -7,11 +7,22 @@ export type SyncFields = {
 }
 
 export type Transaction = SyncFields & {
-  type: 'income' | 'expense'
+  type: 'income' | 'expense' | 'transfer'
   amountCents: number
-  categoryId: string
+  categoryId?: string
+  accountId?: string
+  transferAccountId?: string
   note?: string
   date: string
+}
+
+export type AccountKind = 'cash' | 'bank' | 'savings' | 'card'
+
+export type Account = SyncFields & {
+  name: string
+  kind: AccountKind
+  openingBalanceCents: number
+  archived: boolean
 }
 
 export type Category = SyncFields & {
