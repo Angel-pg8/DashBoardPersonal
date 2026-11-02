@@ -11,6 +11,11 @@
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
      id="defs1" />
+  <rect
+     width="1024"
+     height="1024"
+     fill="#050505"
+     id="background" />
   <g
      id="g1">
     <path

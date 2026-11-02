@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
-const base = process.env.VITE_BASE ?? '/'
+const base = process.env.VITE_BASE ?? '/DashBoardPersonal/'
 
 export default defineConfig({
   base,
@@ -14,6 +14,7 @@ export default defineConfig({
       name: 'Dashboard personal de Ángel',
       short_name: 'Mi espacio',
       description: 'Un espacio personal que funciona sin conexión.',
+      lang: 'es',
       theme_color: '#050505',
       background_color: '#050505',
       display: 'standalone',

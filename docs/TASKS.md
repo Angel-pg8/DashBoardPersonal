@@ -7,16 +7,16 @@ Si Codex se queda sin cuota a mitad de fase, el siguiente bloque sin marcar pued
 ## Fase 1 — Base y diseño
 **Bloque 1A (Codex):** proyecto, tokens, fuente local, color por hora, componentes base y shell de navegación.
 **Bloque 1B (Codex o herramienta más barata):** PWA instalable/offline, iconos, despliegue a GitHub Pages, esquema de Dexie y `DECISIONS.md`.
-- [ ] Proyecto Vite + React + TS con Tailwind v4, ESLint y Vitest configurados.
-- [ ] `base` de Vite configurable (`VITE_BASE`) para GitHub Pages; workflow de despliegue en GitHub Actions.
-- [ ] Tokens de `DESIGN.md` en `@theme`; Inter instalada localmente.
-- [ ] Color por hora del día con `data-tone` (franjas de `DESIGN.md` sección 4) y ajuste manual guardado en preferencias.
-- [ ] Componentes base de `DESIGN.md` sección 6 (al menos Button, Card, ListItem, Input, Chip, BottomNav, SideNav, EmptyState, Sheet).
-- [ ] Shell: navegación inferior en móvil, lateral en ≥1024px; pantallas vacías: Inicio, Finanzas, Más.
-- [ ] Hexágono como logo y como icono PWA (iconos 192/512 y maskable).
-- [ ] PWA instalable y funcionando offline (service worker + manifest).
-- [ ] Dexie con el esquema de `docs/SPEC.md` (Transaction, Category, Budget) y categorías iniciales por defecto.
-- [ ] `docs/DECISIONS.md` con las decisiones tomadas.
+- [x] Proyecto Vite + React + TS con Tailwind v4, ESLint y Vitest configurados.
+- [x] `base` de Vite configurable (`VITE_BASE`) para GitHub Pages; workflow de despliegue en GitHub Actions.
+- [x] Tokens de `DESIGN.md` en `@theme`; Inter instalada localmente.
+- [x] Color por hora del día con `data-tone` (franjas de `DESIGN.md` sección 4) y ajuste manual guardado en preferencias.
+- [x] Componentes base de `DESIGN.md` sección 6 (al menos Button, Card, ListItem, Input, Chip, BottomNav, SideNav, EmptyState, Sheet).
+- [x] Shell: navegación inferior en móvil, lateral en ≥1024px; pantallas vacías: Inicio, Finanzas, Más.
+- [x] Hexágono como logo y como icono PWA (iconos 192/512 y maskable).
+- [x] PWA instalable y funcionando offline (service worker + manifest).
+- [x] Dexie con el esquema de `docs/SPEC.md` (Transaction, Category, Budget) y categorías iniciales por defecto.
+- [x] `docs/DECISIONS.md` con las decisiones tomadas.
 **Aceptación:** `npm run build`, `lint` y `test` pasan; se instala en iPhone; con el modo avión sigue abriendo; contraste AA en todas las franjas; `/impeccable audit` sin hallazgos críticos.
 
 ## Fase 2 — Finanzas v1
