@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { Account, Transaction } from '../db/types'
-import { accountBalanceCents, availableCents, availablePerDayCents, daysRemainingInMonth, expenseByCategoryCents, totalByTypeCents, transactionsForMonth } from './budget'
+import type { Account, Category, Transaction } from '../db/types'
+import { accountBalanceCents, availableCents, availablePerDayCents, categoriesByUsage, daysRemainingInMonth, expenseByCategoryCents, totalByTypeCents, transactionsForMonth } from './budget'
 
 const account: Account = { id: 'cash', name: 'Efectivo', kind: 'cash', openingBalanceCents: 0, archived: false, createdAt: '', updatedAt: '', synced: false }
 const transactions: Transaction[] = [
@@ -30,5 +30,13 @@ describe('budget calculations', () => {
     expect(daysRemainingInMonth(new Date(2026, 1, 28))).toBe(1)
     expect(daysRemainingInMonth(new Date(2026, 2, 1))).toBe(31)
     expect(availablePerDayCents(-100, 0)).toBe(-100)
+  })
+
+  it('orders category chips by active movement use', () => {
+    const categories: Category[] = [
+      { id: 'food', name: 'Comida', kind: 'expense', sortOrder: 1, createdAt: '', updatedAt: '', synced: false },
+      { id: 'transport', name: 'Transporte', kind: 'expense', sortOrder: 0, createdAt: '', updatedAt: '', synced: false },
+    ]
+    expect(categoriesByUsage(categories, transactions, 'expense').map((category) => category.id)).toEqual(['food', 'transport'])
   })
 })

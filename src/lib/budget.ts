@@ -1,4 +1,4 @@
-import type { Account, Budget, Transaction } from '../db/types'
+import type { Account, Budget, Category, Transaction } from '../db/types'
 
 function isActive(transaction: Transaction): boolean {
   return transaction.deletedAt === undefined
@@ -44,4 +44,14 @@ export function daysRemainingInMonth(date: Date): number {
 
 export function availablePerDayCents(available: number, daysRemaining: number): number {
   return Math.trunc(available / Math.max(1, daysRemaining))
+}
+
+export function categoriesByUsage(categories: readonly Category[], transactions: readonly Transaction[], kind: Category['kind']): Category[] {
+  const uses = new Map<string, number>()
+  for (const transaction of transactions) {
+    if (isActive(transaction) && transaction.categoryId) uses.set(transaction.categoryId, (uses.get(transaction.categoryId) ?? 0) + 1)
+  }
+  return [...categories]
+    .filter((category) => category.deletedAt === undefined && category.kind === kind)
+    .sort((left, right) => (uses.get(right.id) ?? 0) - (uses.get(left.id) ?? 0) || left.sortOrder - right.sortOrder)
 }

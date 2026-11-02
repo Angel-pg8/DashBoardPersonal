@@ -3,8 +3,8 @@ import { BottomNav, type AppRoute, SideNav } from './components/ui/Navigation'
 import { Button } from './components/ui/Button'
 import { Card } from './components/ui/Card'
 import { Chip } from './components/ui/Chip'
-import { EmptyState } from './components/ui/EmptyState'
 import { resolveTone, type TonePreference } from './lib/tone'
+import { FinancePage } from './features/finance/FinancePage'
 
 const preferenceKey = 'dashboard-tone-preference'
 const toneOptions: { value: TonePreference; label: string }[] = [
@@ -18,10 +18,6 @@ function readPreference(): TonePreference {
 
 function HomePage({ onFinance }: { onFinance: () => void }) {
   return <div className="page"><h1 className="page__title">Tu día, claro.</h1><Card className="home-hero"><p className="eyeless-label">Aún no hay movimientos</p><p className="home-hero__title">Empieza cuando quieras.</p><div className="home-actions"><Button onClick={onFinance}>Ver finanzas</Button><Button variant="secondary" disabled title="Disponible en la fase 2">Agregar gasto</Button></div></Card></div>
-}
-
-function FinancePage() {
-  return <div className="page"><h1 className="page__title">Finanzas.</h1><p className="page__intro">Tus movimientos y presupuestos aparecerán aquí en la siguiente fase.</p><EmptyState title="Aún no hay gastos este mes." description="Agrega el primero cuando el registro de movimientos esté disponible." /></div>
 }
 
 function MorePage({ preference, setPreference }: { preference: TonePreference; setPreference: (preference: TonePreference) => void }) {
