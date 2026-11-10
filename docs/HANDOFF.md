@@ -5,7 +5,7 @@
 - Fase activa: 2A — Finanzas: núcleo.
 - Bloque 2A-1 cerrado en `75df3ef`.
 - Bloque 2A-2 cerrado: cuentas locales con saldo calculado, y registro rápido offline de gasto, ingreso y transferencia. El saldo inicial admite valores negativos para tarjetas.
-- Último commit estable de implementación: se registrará al cerrar este bloque.
+- Último commit estable de implementación: `37efc91` (`feat(finance): close accounts and quick entry`).
 - No hay trabajo pendiente sin confirmar en este punto.
 
 ## Siguiente bloque
