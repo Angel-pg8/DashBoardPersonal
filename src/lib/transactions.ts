@@ -1,7 +1,9 @@
 import type { Transaction } from '../db/types'
+import { financePeriodKey } from './period'
 
 export type TransactionFilters = {
   month: string
+  startDay?: number
   query: string
   categoryId: string
   accountId: string
@@ -28,7 +30,7 @@ export function filterTransactions(
   const query = filters.query.trim().toLocaleLowerCase()
   return transactions
     .filter((transaction) => transaction.deletedAt === undefined)
-    .filter((transaction) => transaction.date.startsWith(`${filters.month}-`))
+    .filter((transaction) => financePeriodKey(transaction.date, filters.startDay) === filters.month)
     .filter((transaction) => filters.type === 'all' || transaction.type === filters.type)
     .filter((transaction) => !filters.categoryId || transaction.categoryId === filters.categoryId)
     .filter((transaction) => !filters.accountId || transaction.accountId === filters.accountId || transaction.transferAccountId === filters.accountId)
@@ -53,7 +55,7 @@ export function groupTransactionsByDay(transactions: readonly Transaction[]): Tr
     }))
 }
 
-export function monthOptions(transactions: readonly Transaction[], currentMonth: string): string[] {
-  return [...new Set([currentMonth, ...transactions.filter((transaction) => transaction.deletedAt === undefined).map((transaction) => transaction.date.slice(0, 7))])]
+export function monthOptions(transactions: readonly Transaction[], currentMonth: string, startDay = 1): string[] {
+  return [...new Set([currentMonth, ...transactions.filter((transaction) => transaction.deletedAt === undefined).map((transaction) => financePeriodKey(transaction.date, startDay))])]
     .sort((left, right) => right.localeCompare(left))
 }

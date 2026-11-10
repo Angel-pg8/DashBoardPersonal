@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-- Fase cerrada: 2A — Finanzas: núcleo, con pulido de interacción del módulo.
+- Fase en curso: 2B-1 — período, presupuesto y resumen.
 - Bloques 2A-1 a 2A-3 cerrados (ver commits `75df3ef`, 2A-2, `3ca3aba`).
 - Pulido de Finanzas cerrado (`fix(finance)`): 
   - Los chips y demás botones no envían el formulario por accidente: `Chip`, `IconButton`, `Tabs` y `Button` usan `type="button"` por defecto; solo "Guardar…" y "Guardar y añadir otro" envían.
@@ -14,14 +14,20 @@
   - En Inicio, "Agregar gasto" abre el sheet de registro (estado del sheet elevado a `App`); ya no está deshabilitado.
 - No hay trabajo pendiente sin confirmar en este punto.
 
+## Avance de 2B-1
+
+- Paso 1 cerrado: la lógica pura de período financiero, presupuestos y resumen está en `src/lib/period.ts` y `src/lib/budget.ts`, con pruebas para días 29/30/31, cambio de año, límites y transferencias.
+- El filtro de movimientos ya resuelve el período mediante una única función compartida; la interfaz todavía conserva el inicio de mes en 1 hasta el siguiente paso.
+- Último commit estable de implementación: se registrará al cerrar este paso.
+
 ## Siguiente fase
 
-Fase 2B — Finanzas: control. No se ha iniciado: presupuesto, resumen, recurrentes, análisis y CSV siguen pendientes.
+Completar el paso 2 de 2B-1: pantalla de Presupuesto y ajuste local del día de inicio del período. Después, el paso 3 agrega el resumen en Inicio y Finanzas. No empezar 2B-2.
 
 ## Verificación
 
 ```text
-npm run test    # 34 pruebas (10 nuevas en src/lib/sheet.test.ts y src/lib/toast.test.ts)
+npm run test    # 42 pruebas
 npm run lint
 npm run build
 ```
