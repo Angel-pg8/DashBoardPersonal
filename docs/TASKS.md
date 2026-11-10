@@ -27,8 +27,8 @@ Si Codex se queda sin cuota a mitad de fase, el siguiente bloque sin marcar pued
 **Aceptación:** `build`, `lint` y `test` pasan; la lógica cubre transferencias (no cuentan como gasto ni ingreso).
 
 ### 2A-2 Cuentas y registro rápido
-- [ ] Cuentas: crear, editar y archivar; saldo calculado.
-- [ ] Bottom sheet de registro rápido (monto con teclado numérico abierto, Gasto/Ingreso/Transferencia, chips de categoría por uso, cuenta precargada, fecha Hoy/Ayer/Otra, nota opcional, "Guardar y añadir otro", toast con Deshacer).
+- [x] Cuentas: crear, editar y archivar; saldo calculado.
+- [x] Bottom sheet de registro rápido (monto con teclado numérico abierto, Gasto/Ingreso/Transferencia, chips de categoría por uso, cuenta precargada, fecha Hoy/Ayer/Otra, nota opcional, "Guardar y añadir otro", toast con Deshacer).
 **Aceptación:** un gasto típico en máximo 3 toques; funciona sin internet.
 
 ### 2A-3 Movimientos

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatUsdCents, parseAmountCents } from './money'
+import { formatUsdCents, parseAmountCents, parseSignedAmountCents } from './money'
 
 describe('money', () => {
   it('formats USD cents for El Salvador', () => {
@@ -17,5 +17,11 @@ describe('money', () => {
     expect(parseAmountCents('12.3456')).toBeNull()
     expect(parseAmountCents('twelve')).toBeNull()
     expect(parseAmountCents('9007199254740992')).toBeNull()
+  })
+
+  it('parses negative opening balances without permitting negative movements', () => {
+    expect(parseSignedAmountCents('-12.50')).toBe(-1250)
+    expect(parseSignedAmountCents('-')).toBeNull()
+    expect(parseAmountCents('-12.50')).toBeNull()
   })
 })

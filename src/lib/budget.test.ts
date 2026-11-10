@@ -37,6 +37,7 @@ describe('budget calculations', () => {
       { id: 'food', name: 'Comida', kind: 'expense', sortOrder: 1, createdAt: '', updatedAt: '', synced: false },
       { id: 'transport', name: 'Transporte', kind: 'expense', sortOrder: 0, createdAt: '', updatedAt: '', synced: false },
     ]
-    expect(categoriesByUsage(categories, transactions, 'expense').map((category) => category.id)).toEqual(['food', 'transport'])
+    const mismatchedIncome: Transaction = { ...transactions[0], id: 'wrong-kind', categoryId: 'transport' }
+    expect(categoriesByUsage(categories, [...transactions, mismatchedIncome], 'expense').map((category) => category.id)).toEqual(['food', 'transport'])
   })
 })

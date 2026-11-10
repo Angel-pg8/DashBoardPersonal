@@ -30,3 +30,11 @@ export function parseAmountCents(value: string): number | null {
   if (!Number.isSafeInteger(whole) || !Number.isSafeInteger(cents) || whole > Math.floor((Number.MAX_SAFE_INTEGER - cents) / 100)) return null
   return whole * 100 + cents
 }
+
+/** Parses an account opening balance, which may legitimately be negative. */
+export function parseSignedAmountCents(value: string): number | null {
+  const compact = value.trim()
+  const negative = compact.startsWith('-')
+  const cents = parseAmountCents(negative ? compact.slice(1) : compact)
+  return cents === null ? null : negative ? -cents : cents
+}
