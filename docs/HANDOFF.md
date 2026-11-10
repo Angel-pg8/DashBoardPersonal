@@ -21,7 +21,7 @@
 - Último commit estable de implementación: `e4358e1` (`feat(finance): add configurable budget period logic`).
 
 - Paso 2 cerrado: Finanzas tiene pestañas para Movimientos, Presupuesto y Cuentas. Presupuesto permite cambiar el día de inicio, editar total y límites por categoría, ver el estado de cada límite y copiar los valores activos del período anterior.
-- Último commit estable de implementación: se registrará al cerrar este paso.
+- Último commit estable de implementación: `af74f6a` (`feat(finance): add budget controls and period setting`).
 
 ## Siguiente fase
 
