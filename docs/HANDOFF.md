@@ -6,7 +6,7 @@
 - Bloque 2A-1 cerrado en `75df3ef`.
 - Bloque 2A-2 cerrado: cuentas locales con saldo calculado, y registro rápido offline de gasto, ingreso y transferencia. El saldo inicial admite valores negativos para tarjetas.
 - Bloque 2A-3 cerrado: lista de movimientos agrupada por día, con subtotal, selector de mes, búsqueda, filtros, edición y borrado lógico recuperable mediante Deshacer.
-- Último commit estable de implementación: se registrará al cerrar este bloque.
+- Último commit estable de implementación: `3ca3aba` (`feat(finance): add movement management`).
 - No hay trabajo pendiente sin confirmar en este punto.
 
 ## Siguiente fase
