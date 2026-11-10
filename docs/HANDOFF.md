@@ -18,7 +18,7 @@
 
 - Paso 1 cerrado: la lógica pura de período financiero, presupuestos y resumen está en `src/lib/period.ts` y `src/lib/budget.ts`, con pruebas para días 29/30/31, cambio de año, límites y transferencias.
 - El filtro de movimientos ya resuelve el período mediante una única función compartida; la interfaz todavía conserva el inicio de mes en 1 hasta el siguiente paso.
-- Último commit estable de implementación: se registrará al cerrar este paso.
+- Último commit estable de implementación: `e4358e1` (`feat(finance): add configurable budget period logic`).
 
 ## Siguiente fase
 
