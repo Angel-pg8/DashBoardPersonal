@@ -32,7 +32,7 @@ Si Codex se queda sin cuota a mitad de fase, el siguiente bloque sin marcar pued
 **Aceptación:** un gasto típico en máximo 3 toques; funciona sin internet.
 
 ### 2A-3 Movimientos
-- [ ] Lista agrupada por día con subtotal, selector de mes, búsqueda y filtros (categoría, cuenta, tipo), editar y borrar (lógico).
+- [x] Lista agrupada por día con subtotal, selector de mes, búsqueda y filtros (categoría, cuenta, tipo), editar y borrar (lógico).
 **Aceptación:** los datos persisten al cerrar la app; todo funciona sin conexión.
 
 ## Fase 2B — Finanzas: control

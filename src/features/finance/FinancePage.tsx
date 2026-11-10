@@ -8,11 +8,12 @@ import { db, withSyncFields } from '../../db/database'
 import type { Account, AccountKind, Category, Transaction } from '../../db/types'
 import { accountBalanceCents, categoriesByUsage } from '../../lib/budget'
 import { formatUsdCents, parseAmountCents, parseSignedAmountCents } from '../../lib/money'
+import { MovementsSection } from './MovementsSection'
 
 type EntryType = Transaction['type']
 type DateChoice = 'today' | 'yesterday' | 'other'
 type AccountForm = { name: string; kind: AccountKind; openingBalance: string }
-type Toast = { transactionId: string; message: string } | null
+type Toast = { transactionId: string; message: string; action: 'delete' | 'restore' } | null
 
 function localDate(date = new Date()): string {
   const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -54,7 +55,7 @@ export function FinancePage(): JSX.Element {
 
   async function undoTransaction(): Promise<void> {
     if (!toast) return
-    await db.transactions.update(toast.transactionId, { deletedAt: new Date().toISOString(), updatedAt: new Date().toISOString(), synced: false })
+    await db.transactions.update(toast.transactionId, { deletedAt: toast.action === 'delete' ? new Date().toISOString() : undefined, updatedAt: new Date().toISOString(), synced: false })
     setToast(null)
     await reload()
   }
@@ -67,7 +68,8 @@ export function FinancePage(): JSX.Element {
         {accountRows.length === 0 ? <p className="finance-empty">Crea una cuenta para registrar tu primer movimiento.</p> : <div className="account-list">{accountRows.map(({ account, balanceCents }) => <button className="account-row" key={account.id} onClick={() => setAccountEditor(account)}><span><strong>{account.name}</strong><small>{accountKindLabel(account.kind)}</small></span><b className="money-value">{formatUsdCents(balanceCents)}</b></button>)}</div>}
       </Card>
       <p className="finance-page__hint">Toca una cuenta para editarla o archivarla.</p>
-      <QuickEntrySheet open={quickOpen} accounts={activeAccounts} categories={categories} transactions={transactions} onClose={() => setQuickOpen(false)} onSaved={async (transactionId, message, keepOpen) => { setToast({ transactionId, message }); await reload(); if (!keepOpen) setQuickOpen(false) }} />
+      <MovementsSection accounts={accounts} categories={categories} transactions={transactions} onReload={reload} onToast={(transactionId, message, action) => setToast({ transactionId, message, action })} />
+      <QuickEntrySheet open={quickOpen} accounts={activeAccounts} categories={categories} transactions={transactions} onClose={() => setQuickOpen(false)} onSaved={async (transactionId, message, keepOpen) => { setToast({ transactionId, message, action: 'delete' }); await reload(); if (!keepOpen) setQuickOpen(false) }} />
       <AccountSheet account={accountEditor} onClose={() => setAccountEditor(null)} onSaved={async () => { setAccountEditor(null); await reload() }} />
       {toast && <div className="toast" role="status"><span>{toast.message}</span><button onClick={() => void undoTransaction()}>Deshacer</button><button aria-label="Cerrar aviso" onClick={() => setToast(null)}>×</button></div>}
     </div>
