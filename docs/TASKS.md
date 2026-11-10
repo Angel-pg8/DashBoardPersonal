@@ -36,8 +36,8 @@ Si Codex se queda sin cuota a mitad de fase, el siguiente bloque sin marcar pued
 **Aceptación:** los datos persisten al cerrar la app; todo funciona sin conexión.
 
 ## Fase 2B — Finanzas: control
-- [ ] Ajuste "día de inicio del mes" (por defecto 1) usado por todos los cálculos de periodo.
-- [ ] Presupuesto: total mensual y límite por categoría, barras de progreso (ámbar al 80 %, rojo al pasarse) y botón "Copiar mes anterior".
+- [x] Ajuste "día de inicio del mes" (por defecto 1) usado por todos los cálculos de periodo.
+- [x] Presupuesto: total mensual y límite por categoría, barras de progreso (ámbar al 80 %, rojo al pasarse) y botón "Copiar mes anterior".
 - [ ] Resumen en Inicio y pestaña Resumen: disponible del mes, disponible por día, saldo total, ingresos vs gastos, alertas de categorías cerca del límite y últimos movimientos.
 - [ ] Recurrentes: plantillas que generan movimientos al abrir la app, con puesta al día si estuvo cerrada varios días.
 - [ ] Análisis: gasto por categoría y tendencia de 6 meses en SVG/CSS, sin librería pesada.

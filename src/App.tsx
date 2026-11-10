@@ -7,6 +7,7 @@ import { resolveTone, type TonePreference } from './lib/tone'
 import { FinancePage } from './features/finance/FinancePage'
 
 const preferenceKey = 'dashboard-tone-preference'
+const financePeriodStartDayKey = 'dashboard-finance-period-start-day'
 const toneOptions: { value: TonePreference; label: string }[] = [
   { value: 'auto', label: 'Automático' }, { value: 'morning', label: 'Mañana' }, { value: 'day', label: 'Tarde' }, { value: 'dusk', label: 'Atardecer' }, { value: 'night', label: 'Noche' },
 ]
@@ -14,6 +15,11 @@ const toneOptions: { value: TonePreference; label: string }[] = [
 function readPreference(): TonePreference {
   const stored = localStorage.getItem(preferenceKey)
   return toneOptions.some((option) => option.value === stored) ? stored as TonePreference : 'auto'
+}
+
+function readFinancePeriodStartDay(): number {
+  const value = Number(localStorage.getItem(financePeriodStartDayKey))
+  return Number.isInteger(value) && value >= 1 && value <= 31 ? value : 1
 }
 
 function HomePage({ onFinance, onQuickEntry }: { onFinance: () => void; onQuickEntry: () => void }) {
@@ -28,6 +34,7 @@ export default function App() {
   const [route, setRoute] = useState<AppRoute>('home')
   const [preference, setPreference] = useState<TonePreference>(readPreference)
   const [quickOpen, setQuickOpen] = useState(false)
+  const [periodStartDay, setPeriodStartDay] = useState(readFinancePeriodStartDay)
 
   useEffect(() => {
     const applyTone = () => { document.documentElement.dataset.tone = resolveTone(preference) }
@@ -39,8 +46,9 @@ export default function App() {
   }, [preference])
 
   const updatePreference = (next: TonePreference) => { localStorage.setItem(preferenceKey, next); setPreference(next) }
+  const updatePeriodStartDay = (day: number) => { localStorage.setItem(financePeriodStartDayKey, String(day)); setPeriodStartDay(day) }
   const openQuickEntry = () => { setRoute('finance'); setQuickOpen(true) }
-  const page = route === 'home' ? <HomePage onFinance={() => setRoute('finance')} onQuickEntry={openQuickEntry} /> : route === 'finance' ? <FinancePage quickOpen={quickOpen} onQuickOpenChange={setQuickOpen} /> : <MorePage preference={preference} setPreference={updatePreference} />
+  const page = route === 'home' ? <HomePage onFinance={() => setRoute('finance')} onQuickEntry={openQuickEntry} /> : route === 'finance' ? <FinancePage quickOpen={quickOpen} onQuickOpenChange={setQuickOpen} periodStartDay={periodStartDay} onPeriodStartDayChange={updatePeriodStartDay} /> : <MorePage preference={preference} setPreference={updatePreference} />
 
   return <div className="app-shell"><aside className="side-rail"><div className="brand"><span className="brand__hex" aria-hidden="true" />Ángel</div><SideNav route={route} onNavigate={setRoute} /></aside><main className="main"><div className="mobile-brand brand"><span className="brand__hex" aria-hidden="true" />Ángel</div>{page}</main><BottomNav route={route} onNavigate={setRoute} /></div>
 }

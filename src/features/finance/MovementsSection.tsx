@@ -7,6 +7,7 @@ import { Sheet } from '../../components/ui/Sheet'
 import { db } from '../../db/database'
 import type { Account, Category, Transaction } from '../../db/types'
 import { filterTransactions, groupTransactionsByDay, monthOptions, type TransactionFilters } from '../../lib/transactions'
+import { financePeriodKey } from '../../lib/period'
 import { formatUsdCents, parseAmountCents } from '../../lib/money'
 
 type EntryType = Transaction['type']
@@ -22,9 +23,9 @@ type TransactionForm = {
 
 type ToastAction = 'delete' | 'restore'
 
-function currentMonth(): string {
+function localDate(): string {
   const now = new Date()
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 }
 
 function formatMonth(month: string): string {
@@ -54,18 +55,21 @@ function transactionDescription(transaction: Transaction, categories: readonly C
   return categories.find((category) => category.id === transaction.categoryId)?.name ?? typeLabel(transaction.type)
 }
 
-export function MovementsSection({ accounts, categories, transactions, onReload, onToast }: {
+export function MovementsSection({ accounts, categories, transactions, startDay, onReload, onToast }: {
   accounts: Account[]
   categories: Category[]
   transactions: Transaction[]
+  startDay: number
   onReload: () => Promise<void>
   onToast: (transactionId: string, message: string, action: ToastAction) => void
 }): JSX.Element {
-  const [filters, setFilters] = useState<TransactionFilters>({ month: currentMonth(), query: '', categoryId: '', accountId: '', type: 'all' })
+  const [filters, setFilters] = useState<TransactionFilters>({ month: financePeriodKey(localDate(), startDay), startDay, query: '', categoryId: '', accountId: '', type: 'all' })
   const [editing, setEditing] = useState<Transaction | null>(null)
   const activeCategories = useMemo(() => categories.filter((category) => category.deletedAt === undefined), [categories])
   const activeAccounts = useMemo(() => accounts.filter((account) => account.deletedAt === undefined), [accounts])
-  const months = useMemo(() => monthOptions(transactions, currentMonth()), [transactions])
+  const months = useMemo(() => monthOptions(transactions, financePeriodKey(localDate(), startDay), startDay), [startDay, transactions])
+
+  useEffect(() => { setFilters((current) => ({ ...current, month: financePeriodKey(localDate(), startDay), startDay })) }, [startDay])
   const groups = useMemo(() => groupTransactionsByDay(filterTransactions(transactions, filters, (transaction) => `${transaction.note ?? ''} ${transactionDescription(transaction, activeCategories, activeAccounts)}`)), [activeAccounts, activeCategories, filters, transactions])
 
   return <section className="finance-movements" aria-labelledby="movement-title">

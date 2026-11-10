@@ -17,12 +17,15 @@
 ## Avance de 2B-1
 
 - Paso 1 cerrado: la lógica pura de período financiero, presupuestos y resumen está en `src/lib/period.ts` y `src/lib/budget.ts`, con pruebas para días 29/30/31, cambio de año, límites y transferencias.
-- El filtro de movimientos ya resuelve el período mediante una única función compartida; la interfaz todavía conserva el inicio de mes en 1 hasta el siguiente paso.
+- Movimientos y Presupuesto ya resuelven el mismo período mediante una única función compartida.
 - Último commit estable de implementación: `e4358e1` (`feat(finance): add configurable budget period logic`).
+
+- Paso 2 cerrado: Finanzas tiene pestañas para Movimientos, Presupuesto y Cuentas. Presupuesto permite cambiar el día de inicio, editar total y límites por categoría, ver el estado de cada límite y copiar los valores activos del período anterior.
+- Último commit estable de implementación: se registrará al cerrar este paso.
 
 ## Siguiente fase
 
-Completar el paso 2 de 2B-1: pantalla de Presupuesto y ajuste local del día de inicio del período. Después, el paso 3 agrega el resumen en Inicio y Finanzas. No empezar 2B-2.
+Completar el paso 3 de 2B-1: resumen en Inicio y en Finanzas. No empezar 2B-2.
 
 ## Verificación
 
@@ -47,3 +50,5 @@ npm run build
 - En iPhone: “Guardar y añadir otro” debe dejar el monto enfocado con teclado numérico, scroll arriba y cuenta/fecha conservadas.
 - Desde Inicio, “Agregar gasto” abre el sheet de registro directamente.
 - Con “Reducir movimiento” activado en iOS, verificar que las animaciones son mínimas y el aviso sigue cerrándose solo a los 6 s.
+- En iPhone y PC, cambiar el día de inicio del período (incluido 29, 30 y 31) y verificar que Movimientos y Presupuesto muestran el mismo rango de fechas.
+- Definir presupuesto total y de categoría, probar el aviso ámbar al 80 %, el rojo al superar el límite y un límite de $0. Copiar el período anterior y verificar los importes.

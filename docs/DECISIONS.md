@@ -21,3 +21,8 @@
 - Cerrar el sheet de registro con muesca arrastrada, toque en la muesca o toque en el fondo pasa por una protección: si hay monto o nota escritos, se pide confirmación con `window.confirm` (nativo, offline, sin dependencias). Si se descarta, el borrador se limpia.
 - El bloqueo de scroll del fondo usa `position: fixed` sobre `body` con la posición restaurada al cerrar, porque `overflow: hidden` no basta en Safari iOS.
 - "Agregar gasto" en Inicio abre el sheet de registro: el estado del sheet se elevó a `App` (en lugar de un contexto) por ser lo más simple.
+
+## Fase 2B-1
+
+- El día de inicio del período es una preferencia local pequeña (`dashboard-finance-period-start-day`), por lo que se guarda en `localStorage` como la preferencia de color; no es un dato sincronizable.
+- La clave `month` de un presupuesto identifica el mes en que inicia el período. Si se elige el día 29, 30 o 31, cada período comienza en el último día disponible de ese mes.
