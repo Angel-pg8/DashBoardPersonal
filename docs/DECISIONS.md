@@ -14,3 +14,10 @@
 - Una transferencia es un solo `Transaction` de tipo `transfer`: resta de `accountId`, suma a `transferAccountId` y no entra en totales de ingreso ni gasto. Los movimientos v1 siguen siendo válidos porque los campos de cuenta son opcionales.
 - Las cuentas tienen `openingBalanceCents` y `archived`; el saldo se calcula únicamente con esa apertura y movimientos activos. Un saldo negativo es válido, en especial para tarjetas.
 - No se agregaron dependencias: Dexie y Vitest ya cubren la migración y las pruebas de la lógica financiera.
+
+## Fase 2A — pulido de Finanzas
+
+- El aviso con Deshacer (toast) se cierra solo a los 6 s y se reemplaza (no se apila); se pausa mientras el usuario lo mantiene presionado. El tiempo vive en `src/lib/toast.ts` y la barra de progreso usa `transform: scaleX`.
+- Cerrar el sheet de registro con muesca arrastrada, toque en la muesca o toque en el fondo pasa por una protección: si hay monto o nota escritos, se pide confirmación con `window.confirm` (nativo, offline, sin dependencias). Si se descarta, el borrador se limpia.
+- El bloqueo de scroll del fondo usa `position: fixed` sobre `body` con la posición restaurada al cerrar, porque `overflow: hidden` no basta en Safari iOS.
+- "Agregar gasto" en Inicio abre el sheet de registro: el estado del sheet se elevó a `App` (en lugar de un contexto) por ser lo más simple.

@@ -16,8 +16,8 @@ function readPreference(): TonePreference {
   return toneOptions.some((option) => option.value === stored) ? stored as TonePreference : 'auto'
 }
 
-function HomePage({ onFinance }: { onFinance: () => void }) {
-  return <div className="page"><h1 className="page__title">Tu día, claro.</h1><Card className="home-hero"><p className="eyeless-label">Aún no hay movimientos</p><p className="home-hero__title">Empieza cuando quieras.</p><div className="home-actions"><Button onClick={onFinance}>Ver finanzas</Button><Button variant="secondary" disabled title="Disponible en la fase 2">Agregar gasto</Button></div></Card></div>
+function HomePage({ onFinance, onQuickEntry }: { onFinance: () => void; onQuickEntry: () => void }) {
+  return <div className="page"><h1 className="page__title">Tu día, claro.</h1><Card className="home-hero"><p className="eyeless-label">Aún no hay movimientos</p><p className="home-hero__title">Empieza cuando quieras.</p><div className="home-actions"><Button onClick={onFinance}>Ver finanzas</Button><Button variant="secondary" onClick={onQuickEntry}>Agregar gasto</Button></div></Card></div>
 }
 
 function MorePage({ preference, setPreference }: { preference: TonePreference; setPreference: (preference: TonePreference) => void }) {
@@ -27,6 +27,7 @@ function MorePage({ preference, setPreference }: { preference: TonePreference; s
 export default function App() {
   const [route, setRoute] = useState<AppRoute>('home')
   const [preference, setPreference] = useState<TonePreference>(readPreference)
+  const [quickOpen, setQuickOpen] = useState(false)
 
   useEffect(() => {
     const applyTone = () => { document.documentElement.dataset.tone = resolveTone(preference) }
@@ -38,7 +39,8 @@ export default function App() {
   }, [preference])
 
   const updatePreference = (next: TonePreference) => { localStorage.setItem(preferenceKey, next); setPreference(next) }
-  const page = route === 'home' ? <HomePage onFinance={() => setRoute('finance')} /> : route === 'finance' ? <FinancePage /> : <MorePage preference={preference} setPreference={updatePreference} />
+  const openQuickEntry = () => { setRoute('finance'); setQuickOpen(true) }
+  const page = route === 'home' ? <HomePage onFinance={() => setRoute('finance')} onQuickEntry={openQuickEntry} /> : route === 'finance' ? <FinancePage quickOpen={quickOpen} onQuickOpenChange={setQuickOpen} /> : <MorePage preference={preference} setPreference={updatePreference} />
 
   return <div className="app-shell"><aside className="side-rail"><div className="brand"><span className="brand__hex" aria-hidden="true" />Ángel</div><SideNav route={route} onNavigate={setRoute} /></aside><main className="main"><div className="mobile-brand brand"><span className="brand__hex" aria-hidden="true" />Ángel</div>{page}</main><BottomNav route={route} onNavigate={setRoute} /></div>
 }
