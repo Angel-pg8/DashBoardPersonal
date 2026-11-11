@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { BottomNav, type AppRoute, SideNav } from './components/ui/Navigation'
-import { Button } from './components/ui/Button'
 import { Card } from './components/ui/Card'
 import { Chip } from './components/ui/Chip'
+import { db } from './db/database'
+import type { Account, Budget, Category, Transaction } from './db/types'
+import { SummarySection } from './features/finance/SummarySection'
 import { resolveTone, type TonePreference } from './lib/tone'
 import { FinancePage } from './features/finance/FinancePage'
 
@@ -22,8 +24,20 @@ function readFinancePeriodStartDay(): number {
   return Number.isInteger(value) && value >= 1 && value <= 31 ? value : 1
 }
 
-function HomePage({ onFinance, onQuickEntry }: { onFinance: () => void; onQuickEntry: () => void }) {
-  return <div className="page"><h1 className="page__title">Tu día, claro.</h1><Card className="home-hero"><p className="eyeless-label">Aún no hay movimientos</p><p className="home-hero__title">Empieza cuando quieras.</p><div className="home-actions"><Button onClick={onFinance}>Ver finanzas</Button><Button variant="secondary" onClick={onQuickEntry}>Agregar gasto</Button></div></Card></div>
+function localDate(): string {
+  const now = new Date()
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+}
+
+function HomePage({ onFinance, onQuickEntry, periodStartDay }: { onFinance: () => void; onQuickEntry: () => void; periodStartDay: number }) {
+  const [accounts, setAccounts] = useState<Account[]>([])
+  const [budgets, setBudgets] = useState<Budget[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
+  const [transactions, setTransactions] = useState<Transaction[]>([])
+
+  useEffect(() => { void Promise.all([db.accounts.toArray(), db.budgets.toArray(), db.categories.toArray(), db.transactions.toArray()]).then(([nextAccounts, nextBudgets, nextCategories, nextTransactions]) => { setAccounts(nextAccounts); setBudgets(nextBudgets); setCategories(nextCategories); setTransactions(nextTransactions) }) }, [])
+
+  return <div className="page"><h1 className="page__title">Tu día, claro.</h1><SummarySection accounts={accounts} budgets={budgets} categories={categories} transactions={transactions} today={localDate()} startDay={periodStartDay} onQuickEntry={onQuickEntry} onFinance={onFinance} /></div>
 }
 
 function MorePage({ preference, setPreference }: { preference: TonePreference; setPreference: (preference: TonePreference) => void }) {
@@ -48,7 +62,7 @@ export default function App() {
   const updatePreference = (next: TonePreference) => { localStorage.setItem(preferenceKey, next); setPreference(next) }
   const updatePeriodStartDay = (day: number) => { localStorage.setItem(financePeriodStartDayKey, String(day)); setPeriodStartDay(day) }
   const openQuickEntry = () => { setRoute('finance'); setQuickOpen(true) }
-  const page = route === 'home' ? <HomePage onFinance={() => setRoute('finance')} onQuickEntry={openQuickEntry} /> : route === 'finance' ? <FinancePage quickOpen={quickOpen} onQuickOpenChange={setQuickOpen} periodStartDay={periodStartDay} onPeriodStartDayChange={updatePeriodStartDay} /> : <MorePage preference={preference} setPreference={updatePreference} />
+  const page = route === 'home' ? <HomePage onFinance={() => setRoute('finance')} onQuickEntry={openQuickEntry} periodStartDay={periodStartDay} /> : route === 'finance' ? <FinancePage quickOpen={quickOpen} onQuickOpenChange={setQuickOpen} periodStartDay={periodStartDay} onPeriodStartDayChange={updatePeriodStartDay} /> : <MorePage preference={preference} setPreference={updatePreference} />
 
   return <div className="app-shell"><aside className="side-rail"><div className="brand"><span className="brand__hex" aria-hidden="true" />Ángel</div><SideNav route={route} onNavigate={setRoute} /></aside><main className="main"><div className="mobile-brand brand"><span className="brand__hex" aria-hidden="true" />Ángel</div>{page}</main><BottomNav route={route} onNavigate={setRoute} /></div>
 }

@@ -12,14 +12,15 @@ import { accountBalanceCents, categoriesByUsage } from '../../lib/budget'
 import { formatUsdCents, parseAmountCents, parseSignedAmountCents } from '../../lib/money'
 import { MovementsSection } from './MovementsSection'
 import { BudgetSection } from './BudgetSection'
+import { SummarySection } from './SummarySection'
 
 type EntryType = Transaction['type']
 type DateChoice = 'today' | 'yesterday' | 'other'
 type AccountForm = { name: string; kind: AccountKind; openingBalance: string }
 type FinanceToast = { id: string; transactionId?: string; message: string; action?: 'delete' | 'restore' } | null
-type FinanceTab = 'movements' | 'budget' | 'accounts'
+type FinanceTab = 'summary' | 'movements' | 'budget' | 'accounts'
 
-const financeTabs = [{ id: 'movements', label: 'Movimientos' }, { id: 'budget', label: 'Presupuesto' }, { id: 'accounts', label: 'Cuentas' }]
+const financeTabs = [{ id: 'summary', label: 'Resumen' }, { id: 'movements', label: 'Movimientos' }, { id: 'budget', label: 'Presupuesto' }, { id: 'accounts', label: 'Cuentas' }]
 
 function localDate(date = new Date()): string {
   const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -43,7 +44,7 @@ export function FinancePage({ quickOpen, onQuickOpenChange, periodStartDay, onPe
   const [categories, setCategories] = useState<Category[]>([])
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [accountEditor, setAccountEditor] = useState<Account | null | 'new'>(null)
-  const [tab, setTab] = useState<FinanceTab>('movements')
+  const [tab, setTab] = useState<FinanceTab>('summary')
   const [toast, setToast] = useState<FinanceToast>(null)
 
   const reload = useCallback(async () => {
@@ -72,6 +73,7 @@ export function FinancePage({ quickOpen, onQuickOpenChange, periodStartDay, onPe
     <div className="page finance-page">
       <div className="finance-page__heading"><div><h1 className="page__title">Finanzas.</h1><p className="page__intro">Registra lo de hoy sin perder el ritmo.</p></div><Button className="finance-page__add" onClick={() => onQuickOpenChange(true)}>Agregar gasto</Button></div>
       <Tabs tabs={financeTabs} value={tab} onChange={(nextTab) => setTab(nextTab as FinanceTab)} />
+      {tab === 'summary' && <SummarySection accounts={accounts} budgets={budgets} categories={categories} transactions={transactions} today={localDate()} startDay={periodStartDay} onQuickEntry={() => onQuickOpenChange(true)} />}
       {tab === 'accounts' && <><Card className="finance-accounts">
         <div className="finance-section-header"><div><h2>Cuentas</h2><p>El saldo sale de tus movimientos.</p></div><Button variant="ghost" onClick={() => setAccountEditor('new')}>Nueva cuenta</Button></div>
         {accountRows.length === 0 ? <p className="finance-empty">Crea una cuenta para registrar tu primer movimiento.</p> : <div className="account-list">{accountRows.map(({ account, balanceCents }) => <button className="account-row" key={account.id} onClick={() => setAccountEditor(account)}><span><strong>{account.name}</strong><small>{accountKindLabel(account.kind)}</small></span><b className="money-value">{formatUsdCents(balanceCents)}</b></button>)}</div>}

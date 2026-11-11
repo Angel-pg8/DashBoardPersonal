@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Account, Budget, Category, Transaction } from '../db/types'
-import { accountBalanceCents, availableCents, availablePerDayCents, availablePerDayForPeriodCents, budgetStatus, categoryBudgetLimitCents, categoriesByUsage, categoryBudgetSummaries, copyPreviousPeriodBudgetValues, daysRemainingInMonth, expenseByCategoryCents, totalActiveAccountBalanceCents, totalBudgetLimitCents, totalByTypeCents, transactionsForMonth, transactionsForPeriod } from './budget'
+import { accountBalanceCents, availableCents, availablePerDayCents, availablePerDayForPeriodCents, budgetStatus, categoryBudgetLimitCents, categoriesByUsage, categoryBudgetSummaries, copyPreviousPeriodBudgetValues, daysRemainingInMonth, expenseByCategoryCents, financeOverview, totalActiveAccountBalanceCents, totalBudgetLimitCents, totalByTypeCents, transactionsForMonth, transactionsForPeriod } from './budget'
 
 const account: Account = { id: 'cash', name: 'Efectivo', kind: 'cash', openingBalanceCents: 0, archived: false, createdAt: '', updatedAt: '', synced: false }
 const transactions: Transaction[] = [
@@ -93,5 +93,12 @@ describe('budget calculations', () => {
       { ...account, id: 'archived', archived: true },
       { ...account, id: 'deleted-account', deletedAt: '2026-11-01T00:00:00.000Z' },
     ], transactions)).toBe(7000)
+  })
+
+  it('builds one overview from the shared period without counting transfers as income or expense', () => {
+    const overview = financeOverview({ accounts: [account, { ...account, id: 'bank' }], budgets, categories, transactions, today: '2026-11-03' })
+    expect(overview).toMatchObject({ periodKey: '2026-11', availableCents: 5500, availablePerDayCents: 196, totalBalanceCents: 7000, incomeCents: 10000, expenseCents: 2500 })
+    expect(overview.alerts.map((alert) => alert.categoryId)).toEqual(['food'])
+    expect(overview.recentTransactions.map((transaction) => transaction.id)).toEqual(['transfer', 'expense', 'income', 'previous-month'])
   })
 })

@@ -1,5 +1,5 @@
 import type { Account, Budget, Category, Transaction } from '../db/types'
-import { daysRemainingInFinancePeriod, financePeriod, previousFinancePeriodKey } from './period'
+import { daysRemainingInFinancePeriod, financePeriod, financePeriodKey, previousFinancePeriodKey } from './period'
 
 export type BudgetStatus = 'none' | 'normal' | 'warning' | 'exceeded'
 
@@ -10,6 +10,17 @@ export type CategoryBudgetSummary = {
   remainingCents: number | null
   progress: number
   status: BudgetStatus
+}
+
+export type FinanceOverview = {
+  periodKey: string
+  availableCents: number
+  availablePerDayCents: number
+  totalBalanceCents: number
+  incomeCents: number
+  expenseCents: number
+  alerts: CategoryBudgetSummary[]
+  recentTransactions: Transaction[]
 }
 
 function isActive(transaction: Transaction): boolean {
@@ -91,6 +102,30 @@ export function availablePerDayForPeriodCents(availableCentsForPeriod: number, d
 
 export function totalActiveAccountBalanceCents(accounts: readonly Account[], transactions: readonly Transaction[]): number {
   return accounts.reduce((total, account) => total + (account.deletedAt === undefined && !account.archived ? accountBalanceCents(account, transactions) : 0), 0)
+}
+
+export function financeOverview({ accounts, budgets, categories, transactions, today, startDay = 1 }: { accounts: readonly Account[]; budgets: readonly Budget[]; categories: readonly Category[]; transactions: readonly Transaction[]; today: string; startDay?: number }): FinanceOverview {
+  const periodKey = financePeriodKey(today, startDay)
+  const periodTransactions = transactionsForPeriod(transactions, periodKey, startDay)
+  const expenseCents = totalByTypeCents(periodTransactions, 'expense')
+  const available = availableCents(totalBudgetLimitCents(budgets, periodKey), periodTransactions)
+  const alerts = categoryBudgetSummaries(categories, budgets, periodTransactions, periodKey)
+    .filter((summary) => summary.status === 'warning' || summary.status === 'exceeded')
+    .sort((left, right) => right.progress - left.progress)
+  const recentTransactions = transactions
+    .filter(isActive)
+    .sort((left, right) => right.date.localeCompare(left.date) || right.updatedAt.localeCompare(left.updatedAt))
+    .slice(0, 5)
+  return {
+    periodKey,
+    availableCents: available,
+    availablePerDayCents: availablePerDayForPeriodCents(available, today, startDay),
+    totalBalanceCents: totalActiveAccountBalanceCents(accounts, transactions),
+    incomeCents: totalByTypeCents(periodTransactions, 'income'),
+    expenseCents,
+    alerts,
+    recentTransactions,
+  }
 }
 
 export function availablePerDayCents(available: number, daysRemaining: number): number {
