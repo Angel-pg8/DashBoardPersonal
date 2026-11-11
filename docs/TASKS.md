@@ -36,13 +36,17 @@ Si Codex se queda sin cuota a mitad de fase, el siguiente bloque sin marcar pued
 **Aceptación:** los datos persisten al cerrar la app; todo funciona sin conexión.
 
 ## Fase 2B — Finanzas: control
-- [x] Ajuste "día de inicio del mes" (por defecto 1) usado por todos los cálculos de periodo.
-- [x] Presupuesto: total mensual y límite por categoría, barras de progreso (ámbar al 80 %, rojo al pasarse) y botón "Copiar mes anterior".
+### 2B-1 Periodo, presupuesto y resumen
+- [ ] Ajuste "día de inicio del mes" (por defecto 1), usado por todos los cálculos de periodo (lógica en `src/lib/` con pruebas, incluidos meses cortos y cambio de año).
+- [ ] Presupuesto: total mensual y límite por categoría, barras de progreso (ámbar al 80 %, rojo al pasarse) y botón "Copiar mes anterior".
 - [ ] Resumen en Inicio y pestaña Resumen: disponible del mes, disponible por día, saldo total, ingresos vs gastos, alertas de categorías cerca del límite y últimos movimientos.
-- [ ] Recurrentes: plantillas que generan movimientos al abrir la app, con puesta al día si estuvo cerrada varios días.
+**Aceptación:** funciona sin internet; presupuesto y resumen coinciden con los movimientos; pruebas, lint y build pasan.
+
+### 2B-2 Recurrentes, análisis y exportar
+- [ ] Recurrentes: plantillas que generan movimientos al abrir la app, con puesta al día si estuvo cerrada varios días, sin duplicarse al abrir varias veces.
 - [ ] Análisis: gasto por categoría y tendencia de 6 meses en SVG/CSS, sin librería pesada.
 - [ ] Exportar movimientos a CSV.
-**Aceptación:** todo funciona sin internet; el presupuesto y el resumen coinciden con los movimientos; los recurrentes no se duplican al abrir la app varias veces; las pruebas pasan.
+**Aceptación:** funciona sin internet; los recurrentes no se duplican; pruebas, lint y build pasan.
 
 ## Fase 3 — Sincronización
 - [ ] Proyecto Supabase, tablas y reglas de seguridad por usuario (RLS).
