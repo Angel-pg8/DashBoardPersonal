@@ -26,3 +26,15 @@
 
 - El día de inicio del período es una preferencia local pequeña (`dashboard-finance-period-start-day`), por lo que se guarda en `localStorage` como la preferencia de color; no es un dato sincronizable.
 - La clave `month` de un presupuesto identifica el mes en que inicia el período. Si se elige el día 29, 30 o 31, cada período comienza en el último día disponible de ese mes.
+
+## Pulido visual móvil (13-nov)
+
+- FAB de 56px abajo a la derecha para "Agregar gasto" en móvil (≤1023px), color de acento y sin sombra; en escritorio se conserva el botón del header junto a la side nav. Decisión de gusto confirmada por el usuario frente a otras opciones (solo botón de header, o FAB más grande con etiqueta).
+- El hexágono de marca se usa como decoración de fondo solo en el bloque "Disponible." de Inicio; no se repite en Finanzas para no competir con la cifra. Confirmado por el usuario.
+- Aire superior de las pantallas en ≤420px: título a 1.9rem del borde (antes 2.8rem), decidido tras verlo en el navegador.
+- Comportamiento tras guardar (elección literal del usuario): "Guardar gasto" vuelve a la pantalla de origen (Inicio); "Guardar y añadir otro" se queda en Finanzas con el sheet abierto.
+- Disponible negativo se tiñe rojo (`--color-expense`); el copy "Sin margen para este periodo." ya existía y se mantiene.
+- Los avisos de límite comunican con palabras, no solo con color: "Quedan $X. Cerca del límite." (ámbar) y "Superaste el límite por $X." (rojo), legibles también sin distinguir el color.
+- Mayúscula solo inicial en la fecha del día de Movimientos ("Viernes, 13 de noviembre") en lugar de capitalizar cada palabra.
+- Archivar una cuenta pide confirmación con `window.confirm` (nativo, offline, sin dependencias), igual que el descarte de borradores del sheet.
+- Tema de gusto abierto (sin decidir): la densidad de los filtros de Movimientos en móvil ocupa buena parte de la pantalla a 390px. Opción futura si molesta: colapsarlos tras un botón "Filtros".

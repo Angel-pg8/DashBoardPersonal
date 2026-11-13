@@ -24,8 +24,36 @@
 - **Regresiones post-Bloque 1/3 corregidas** (sesión 13-nov):
   - **A. Barra lateral desaparecida en escritorio** — causa: `.side-rail { display: none }` quedó en la base CSS (se aplicaba a todas las anchuras) y el media query `≥1024px` no restauraba `display`. Corrección: `display: block` dentro de `@media (min-width: 1024px)`. Commit `36b539b`. Este commit también arrastró una actualización pendiente de HANDOFF de la sesión anterior (documental).
   - **B. Logo no cargaba** — causa: `<img src="/logo-white.svg">` era ruta absoluta; con base `/DashBoardPersonal/` (GitHub Pages) resolvía fuera de la subruta (404). Corrección: `${import.meta.env.BASE_URL}logo-white.svg` en ambos headers + `width/height={30}` fijos + `alt=""`/`aria-hidden` (el texto "Ángel" es el nombre accesible). Se creó `src/vite-env.d.ts` (`/// <reference types="vite/client" />`) para tipar `import.meta.env`. Commit `48d0c45`.
-  - Selectores muertos `.brand__hex` eliminados (el hexágono decorativo sigue vivo en `home-hero::after` y `empty-state__hex`).
+  - Selectores muertos `.brand__hex` eliminados (el hexágono decorativo sigue vivo en `empty-state__hex`; el de Inicio pasó al bloque "Disponible.", ver abajo).
 - No hay trabajo pendiente sin confirmar en este punto.
+
+## Pulido visual móvil (13-nov, segunda sesión)
+
+Revisión con Impeccable/Taste (dial de movimiento bajo) y aplicación solo de arreglos claros; un commit por pantalla, cada uno con lint + build + test en verde:
+
+- `b8250dc` polish(nav): FAB de 56px abajo a la derecha (acento, sin sombra) para abrir el sheet en Inicio y Finanzas ≤1023px; los botones "Agregar gasto" del header y de summary-actions quedan ocultos en móvil vía CSS; ≥1024px sin FAB (botón del header + side nav). Toast con objetivos táctiles de 44px ("Deshacer" 78×44, cierre 25×44) y colocado sobre el FAB; `.main` con padding inferior en móvil para que el FAB no tape contenido.
+- `5c5b09a` polish(home): hexágono de marca detrás del bloque "Disponible." solo en Inicio (`.page--home .summary-available::before`, estático, opacidad .14); aire superior en ≤420px (`.page__title` 2.8rem → 1.9rem); CSS muerto eliminado (`.home-hero`, `.eyeless-label`).
+- `be67b2b` polish(summary): disponible negativo se tiñe con `--color-expense` (`.summary-value--negative`); `tabular-nums` en `.summary-alert`; flex-wrap en `.finance-section-header`.
+- `11adfbc` polish(movements): las 4 pestañas de Finanzas caben a 390px (gap 0 y padding reducido ≤420px).
+- `eac0439` polish(budget): warning legible sin depender solo del color ("Quedan $X. Cerca del límite."); tabular en `.budget-row small`.
+- `ff1d460` polish(accounts): EmptyState consistente en Cuentas y confirmación al archivar (`window.confirm`).
+- `f33752e` polish(finance): botones de encabezado a la derecha (`.finance-section-header .button { margin-left: auto }`); `.finance-month` 11rem → 13rem para no truncar "noviembre de 2026".
+- `e194557` polish(home): hexágono contenido tras la cifra (top -58, right -44, no cruza el copy) y copy ámbar en SummarySection con palabras ("Quedan $X. Cerca del límite.").
+- `88f0102` polish(movements): mayúscula solo en la inicial de la fecha del día ("Viernes, 13 de noviembre", ya no "De Noviembre").
+
+**Tradeoff documentado**: al guardar un gasto desde Inicio la app vuelve a Inicio y el toast con Deshacer (lo dibuja FinancePage) no se ve allí; la confirmación queda en "Últimos movimientos" de Inicio. Guardando desde Finanzas sí se ve el toast (verificado en vivo: aparece sobre el sheet incluso con "Guardar y añadir otro", z-index 30 sobre el backdrop 20, botones de 44px medidos).
+
+### Verificación con capturas (arnés de iframes + browser real, 13-nov)
+
+| Ancho | Vistas verificadas | overflowX |
+|---|---|---|
+| 390 | Inicio (hexágono, ámbar, FAB), Finanzas Resumen/Movimientos/Presupuesto/Cuentas, sheet con scroll hasta acciones, disponible negativo en rojo (−$110.50 con "Sin margen para este periodo."), toast sobre el sheet con botones de 44px | 0 |
+| 768 | Inicio, Resumen, Presupuesto | 0 |
+| 1280 | Inicio, Resumen, Movimientos, Presupuesto, Cuentas (zoom 0.71 en el arnés), FAB oculto (`display: none`) y side rail visibles | 0 |
+
+- Consola sin errores en todas las pasadas; sin desbordes ni elementos duplicados.
+- Comportamiento tras guardar verificado en vivo: desde Inicio vuelve a Inicio; con "Guardar y añadir otro" se queda en Finanzas, sheet abierto, monto limpio y toast visible.
+- Limpieza al cerrar: los movimientos de prueba ($1,200 + cuatro de $1 en Ahorro) se borraron de la DB dev vía Dexie y el arnés temporal (`public/arnes.html`) se eliminó sin haber entrado jamás en un commit; `npm run build` vuelve a 24 entradas de precache.
 
 ## Avance de 2B-1
 
@@ -78,7 +106,10 @@ Base de preview: `/DashBoardPersonal/`. Arnés de iframes a 390/768/1280 px (med
 - En iPhone: arrastrar la muesca hacia abajo para cerrar; pasar el umbral cierra, soltar antes vuelve; tocar la muesca o el fondo cierra; con datos escritos debe pedir confirmación y no perderlos por accidente.
 - En iPhone: verificar que el aviso con Deshacer desaparece a los ~6 s, con la barra que se vacía; mantenerlo presionado lo pausa; un aviso nuevo reemplaza al anterior.
 - En iPhone: "Guardar y añadir otro" debe dejar el monto enfocado con teclado numérico, scroll arriba y cuenta/fecha conservadas.
-- Desde Inicio, "Agregar gasto" abre el sheet de registro directamente.
+- Desde Inicio, "Agregar gasto" abre el sheet de registro directamente (en móvil, con el FAB abajo a la derecha).
+- En iPhone: comprobar que el FAB queda al alcance del pulgar y que el padding inferior de las pantallas deja ver el final de cada lista.
+- Guardar un gasto desde Inicio y confirmar que vuelve a Inicio y que el movimiento aparece en "Últimos movimientos" (el toast con Deshacer solo se ve guardando desde Finanzas; es el tradeoff documentado arriba).
+- Con "Guardar y añadir otro", ver que el toast aparece por encima del sheet y que sus botones se pueden tocar.
 - Con "Reducir movimiento" activado en iOS, verificar que las animaciones son mínimas y el aviso sigue cerrándose solo a los 6 s.
 - En iPhone y PC, cambiar el día de inicio del período (incluido 29, 30 y 31) y verificar que Movimientos y Presupuesto muestran el mismo rango de fechas.
 - Definir presupuesto total y de categoría, probar el aviso ámbar al 80 %, el rojo al superar el límite y un límite de $0. Copiar el período anterior y verificar los importes.
