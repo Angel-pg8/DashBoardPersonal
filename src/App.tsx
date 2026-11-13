@@ -48,6 +48,8 @@ export default function App() {
   const [route, setRoute] = useState<AppRoute>('home')
   const [preference, setPreference] = useState<TonePreference>(readPreference)
   const [quickOpen, setQuickOpen] = useState(false)
+  /** A dónde aterriza al cerrar el registro rápido: el origen, salvo que se haya usado "Guardar y añadir otro". */
+  const [quickReturn, setQuickReturn] = useState<'home' | 'finance'>('home')
   const [periodStartDay, setPeriodStartDay] = useState(readFinancePeriodStartDay)
 
   useEffect(() => {
@@ -61,11 +63,13 @@ export default function App() {
 
   const updatePreference = (next: TonePreference) => { localStorage.setItem(preferenceKey, next); setPreference(next) }
   const updatePeriodStartDay = (day: number) => { localStorage.setItem(financePeriodStartDayKey, String(day)); setPeriodStartDay(day) }
-  const openQuickEntry = () => { setRoute('finance'); setQuickOpen(true) }
-  const page = route === 'home' ? <HomePage onFinance={() => setRoute('finance')} onQuickEntry={openQuickEntry} periodStartDay={periodStartDay} /> : route === 'finance' ? <FinancePage quickOpen={quickOpen} onQuickOpenChange={setQuickOpen} periodStartDay={periodStartDay} onPeriodStartDayChange={updatePeriodStartDay} /> : <MorePage preference={preference} setPreference={updatePreference} />
+  const openQuickEntry = () => { setQuickReturn(route === 'finance' ? 'finance' : 'home'); setRoute('finance'); setQuickOpen(true) }
+  const changeQuickOpen = (open: boolean) => { setQuickOpen(open); if (!open) setRoute(quickReturn) }
+  const onQuickSaved = (keepOpen: boolean) => { if (keepOpen) setQuickReturn('finance') }
+  const page = route === 'home' ? <HomePage onFinance={() => setRoute('finance')} onQuickEntry={openQuickEntry} periodStartDay={periodStartDay} /> : route === 'finance' ? <FinancePage quickOpen={quickOpen} onQuickOpenChange={changeQuickOpen} onQuickSaved={onQuickSaved} periodStartDay={periodStartDay} onPeriodStartDayChange={updatePeriodStartDay} /> : <MorePage preference={preference} setPreference={updatePreference} />
 
   const logoSrc = `${import.meta.env.BASE_URL}logo-white.svg`
 
-  return <div className="app-shell"><aside className="side-rail"><div className="brand"><img src={logoSrc} alt="" aria-hidden="true" className="brand__logo" width={30} height={30} />Ángel</div><SideNav route={route} onNavigate={setRoute} /></aside><main className="main"><div className="mobile-brand brand"><img src={logoSrc} alt="" aria-hidden="true" className="brand__logo" width={30} height={30} />Ángel</div>{page}</main><BottomNav route={route} onNavigate={setRoute} /></div>
+  return <div className="app-shell"><aside className="side-rail"><div className="brand"><img src={logoSrc} alt="" aria-hidden="true" className="brand__logo" width={30} height={30} />Ángel</div><SideNav route={route} onNavigate={setRoute} /></aside><main className="main"><div className="mobile-brand brand"><img src={logoSrc} alt="" aria-hidden="true" className="brand__logo" width={30} height={30} />Ángel</div>{page}</main>{(route === 'home' || route === 'finance') && <button type="button" className="fab" aria-label="Agregar gasto" onClick={openQuickEntry}><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M11 3.5v15M3.5 11h15" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" /></svg></button>}<BottomNav route={route} onNavigate={setRoute} /></div>
 }
 

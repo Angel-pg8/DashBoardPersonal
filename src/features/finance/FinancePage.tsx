@@ -38,7 +38,7 @@ function accountKindLabel(kind: AccountKind): string {
   return { cash: 'Efectivo', bank: 'Banco', savings: 'Ahorro', card: 'Tarjeta' }[kind]
 }
 
-export function FinancePage({ quickOpen, onQuickOpenChange, periodStartDay, onPeriodStartDayChange }: { quickOpen: boolean; onQuickOpenChange: (open: boolean) => void; periodStartDay: number; onPeriodStartDayChange: (day: number) => void }): JSX.Element {
+export function FinancePage({ quickOpen, onQuickOpenChange, onQuickSaved, periodStartDay, onPeriodStartDayChange }: { quickOpen: boolean; onQuickOpenChange: (open: boolean) => void; onQuickSaved?: (keepOpen: boolean) => void; periodStartDay: number; onPeriodStartDayChange: (day: number) => void }): JSX.Element {
   const [accounts, setAccounts] = useState<Account[]>([])
   const [budgets, setBudgets] = useState<Budget[]>([])
   const [categories, setCategories] = useState<Category[]>([])
@@ -80,7 +80,7 @@ export function FinancePage({ quickOpen, onQuickOpenChange, periodStartDay, onPe
       </Card><p className="finance-page__hint">Toca una cuenta para editarla o archivarla.</p></>}
       {tab === 'movements' && <MovementsSection accounts={accounts} categories={categories} transactions={transactions} startDay={periodStartDay} onReload={reload} onToast={(transactionId, message, action) => setToast({ id: transactionId, transactionId, message, action })} />}
       {tab === 'budget' && <BudgetSection budgets={budgets} categories={categories} transactions={transactions} today={localDate()} startDay={periodStartDay} onStartDayChange={onPeriodStartDayChange} onReload={reload} onNotice={(message) => setToast({ id: crypto.randomUUID(), message })} />}
-      <QuickEntrySheet open={quickOpen} accounts={activeAccounts} categories={categories} transactions={transactions} onClose={() => onQuickOpenChange(false)} onSaved={async (transactionId, message, keepOpen) => { setToast({ id: transactionId, transactionId, message, action: 'delete' }); await reload(); if (!keepOpen) onQuickOpenChange(false) }} />
+      <QuickEntrySheet open={quickOpen} accounts={activeAccounts} categories={categories} transactions={transactions} onClose={() => onQuickOpenChange(false)} onSaved={async (transactionId, message, keepOpen) => { onQuickSaved?.(keepOpen); setToast({ id: transactionId, transactionId, message, action: 'delete' }); await reload(); if (!keepOpen) onQuickOpenChange(false) }} />
       <AccountSheet account={accountEditor} onClose={() => setAccountEditor(null)} onSaved={async () => { setAccountEditor(null); await reload() }} />
       {toast && <Toast key={toast.id} message={toast.message} actionLabel={toast.action ? 'Deshacer' : undefined} onAction={toast.action ? () => void undoTransaction() : undefined} onDismiss={() => setToast(null)} />}
     </div>
