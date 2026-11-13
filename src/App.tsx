@@ -37,7 +37,7 @@ function HomePage({ onFinance, onQuickEntry, periodStartDay }: { onFinance: () =
 
   useEffect(() => { void Promise.all([db.accounts.toArray(), db.budgets.toArray(), db.categories.toArray(), db.transactions.toArray()]).then(([nextAccounts, nextBudgets, nextCategories, nextTransactions]) => { setAccounts(nextAccounts); setBudgets(nextBudgets); setCategories(nextCategories); setTransactions(nextTransactions) }) }, [])
 
-  return <div className="page"><h1 className="page__title">Tu día, claro.</h1><SummarySection accounts={accounts} budgets={budgets} categories={categories} transactions={transactions} today={localDate()} startDay={periodStartDay} onQuickEntry={onQuickEntry} onFinance={onFinance} /></div>
+  return <div className="page page--home"><h1 className="page__title">Tu día, claro.</h1><SummarySection accounts={accounts} budgets={budgets} categories={categories} transactions={transactions} today={localDate()} startDay={periodStartDay} onQuickEntry={onQuickEntry} onFinance={onFinance} /></div>
 }
 
 function MorePage({ preference, setPreference }: { preference: TonePreference; setPreference: (preference: TonePreference) => void }) {
