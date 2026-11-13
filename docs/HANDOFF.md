@@ -14,6 +14,13 @@
   - En Inicio, "Agregar gasto" abre el sheet de registro (estado del sheet elevado a `App`); ya no está deshabilitado.
 - **Bloque 1 completado**: Header duplicado en móvil arreglado (ocultar `.side-rail` en móvil), logo hexágono reemplazado por SVG blanco (`/logo-white.svg`). Commit `518b20b`.
 - **Bloque 2 completado**: "Disponible" en Resumen ahora usa saldo real de cuentas (`totalActiveAccountBalanceCents`: saldo inicial + ingresos − gastos ± transferencias) en lugar del cálculo basado en presupuesto. El texto "por día" muestra "Sin margen para este período" cuando disponible ≤ 0. Agregadas 6 pruebas Vitest (solo ingresos, ingresos y gastos, saldo negativo, último día del período, días restantes = 0). Commit `6a0aa1d`.
+- **Bloque 3 completado**: Revisión visual a 390px con Impeccable/Taste. Cambios:
+  - `.chip` `min-height: 36px → 44px` (touch target AA).
+  - `.budget-total` y `.budget-row__header` agregan `flex-wrap: wrap` para no desbordar en 390px.
+  - Padding de chip ajustado a `.5rem .875rem` para mejor hit area.
+  - Contraste verificado: todos los tokens cumplen AA (muted/soft/line, income/expense, accent por tono).
+  - Jerarquía tipográfica `clamp()` y `tabular-nums` intacta. Espaciado coherente.
+  - Commit `f7773ad`.
 - No hay trabajo pendiente sin confirmar en este punto.
 
 ## Avance de 2B-1
@@ -27,7 +34,7 @@
 
 ## Siguiente fase
 
-Completar el paso 3 de 2B-1: resumen en Inicio y en Finanzas. **Bloque 3 en curso**: revisión visual con Impeccable/Taste a 390px (Resumen, Movimientos, Presupuesto, Cuentas).
+Completar el paso 3 de 2B-1: resumen en Inicio y en Finanzas. **Todos los 3 bloques completados**.
 
 ## Verificación
 
@@ -40,17 +47,17 @@ npm run build
 ## Pruebas manuales pendientes
 
 - En iPhone y PC, crear, editar y archivar cuentas; comprobar que el saldo responde a ingresos, gastos y transferencias.
-- Registrar un gasto desde Finanzas: monto, categoría, cuenta, fecha Hoy/Ayer/Otra y nota; usar “Guardar y añadir otro” y “Deshacer”.
+- Registrar un gasto desde Finanzas: monto, categoría, cuenta, fecha Hoy/Ayer/Otra y nota; usar "Guardar y añadir otro" y "Deshacer".
 - Probar una transferencia entre dos cuentas y un saldo inicial negativo de tarjeta.
 - Crear movimientos en dos días y meses distintos; revisar subtotal diario, selector de mes, búsqueda y los filtros de categoría, cuenta y tipo.
 - Editar un movimiento y borrarlo; usar Deshacer para comprobar que vuelve a aparecer y afecta de nuevo el saldo.
 - Repetir lo anterior sin conexión y cerrar/abrir la app para confirmar la persistencia local.
-- En iPhone: tocar chips de categoría/fecha dentro del sheet y verificar que no se envía nada; solo “Guardar” envía.
+- En iPhone: tocar chips de categoría/fecha dentro del sheet y verificar que no se envía nada; solo "Guardar" envía.
 - En iPhone: con el sheet abierto, intentar desplazar el fondo (debe quedar fijo) y hacer scroll dentro del sheet sin que el fondo se mueva.
 - En iPhone: arrastrar la muesca hacia abajo para cerrar; pasar el umbral cierra, soltar antes vuelve; tocar la muesca o el fondo cierra; con datos escritos debe pedir confirmación y no perderlos por accidente.
 - En iPhone: verificar que el aviso con Deshacer desaparece a los ~6 s, con la barra que se vacía; mantenerlo presionado lo pausa; un aviso nuevo reemplaza al anterior.
-- En iPhone: “Guardar y añadir otro” debe dejar el monto enfocado con teclado numérico, scroll arriba y cuenta/fecha conservadas.
-- Desde Inicio, “Agregar gasto” abre el sheet de registro directamente.
-- Con “Reducir movimiento” activado en iOS, verificar que las animaciones son mínimas y el aviso sigue cerrándose solo a los 6 s.
+- En iPhone: "Guardar y añadir otro" debe dejar el monto enfocado con teclado numérico, scroll arriba y cuenta/fecha conservadas.
+- Desde Inicio, "Agregar gasto" abre el sheet de registro directamente.
+- Con "Reducir movimiento" activado en iOS, verificar que las animaciones son mínimas y el aviso sigue cerrándose solo a los 6 s.
 - En iPhone y PC, cambiar el día de inicio del período (incluido 29, 30 y 31) y verificar que Movimientos y Presupuesto muestran el mismo rango de fechas.
 - Definir presupuesto total y de categoría, probar el aviso ámbar al 80 %, el rojo al superar el límite y un límite de $0. Copiar el período anterior y verificar los importes.
