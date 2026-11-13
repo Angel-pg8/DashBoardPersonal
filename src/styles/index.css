@@ -110,7 +110,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .finance-page__hint { margin-top: .9rem; }
 .finance-summary { margin-top: .25rem; }
 .page--home .summary-available { position: relative; overflow: hidden; }
-.page--home .summary-available::before { content: ''; position: absolute; z-index: 0; top: -34px; right: -52px; width: 196px; height: 218px; background: var(--accent); opacity: .14; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); }
+.page--home .summary-available::before { content: ''; position: absolute; z-index: 0; top: -58px; right: -44px; width: 148px; height: 165px; background: var(--accent); opacity: .14; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); }
 .page--home .summary-available > * { position: relative; z-index: 1; }
 .summary-available { padding: 1.75rem 0 1.5rem; border-bottom: 1px solid var(--color-line); }
 .summary-available h2 { max-width: 8ch; margin: 0; font-size: clamp(2.3rem, 9vw, 4.6rem); font-weight: 820; letter-spacing: -.055em; line-height: .95; }
