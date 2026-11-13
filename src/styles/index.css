@@ -159,7 +159,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .movement-groups { margin-top: 1.5rem; }
 .movement-day + .movement-day { margin-top: 1.6rem; }
 .movement-day > header { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-bottom: .55rem; border-bottom: 1px solid var(--color-line); }
-.movement-day h3 { margin: 0; color: var(--color-muted); font-size: .8125rem; font-weight: 700; text-transform: capitalize; }
+.movement-day h3 { margin: 0; color: var(--color-muted); font-size: .8125rem; font-weight: 700; }
+.movement-day h3::first-letter { text-transform: uppercase; }
 .movement-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; width: 100%; min-height: 60px; align-items: center; gap: .75rem; padding: .7rem 0; border: 0; border-bottom: 1px solid var(--color-line); color: var(--color-soft); background: transparent; text-align: left; }
 .movement-row__type { min-width: 5.5rem; color: var(--color-muted); font-size: .75rem; font-weight: 700; }
 .movement-row__type--income, .movement-row__amount--income { color: var(--color-income); }
