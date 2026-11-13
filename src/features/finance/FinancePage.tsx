@@ -13,6 +13,7 @@ import { formatUsdCents, parseAmountCents, parseSignedAmountCents } from '../../
 import { MovementsSection } from './MovementsSection'
 import { BudgetSection } from './BudgetSection'
 import { SummarySection } from './SummarySection'
+import { EmptyState } from '../../components/ui/EmptyState'
 
 type EntryType = Transaction['type']
 type DateChoice = 'today' | 'yesterday' | 'other'
@@ -76,7 +77,7 @@ export function FinancePage({ quickOpen, onQuickOpenChange, onQuickSaved, period
       {tab === 'summary' && <SummarySection accounts={accounts} budgets={budgets} categories={categories} transactions={transactions} today={localDate()} startDay={periodStartDay} onQuickEntry={() => onQuickOpenChange(true)} />}
       {tab === 'accounts' && <><Card className="finance-accounts">
         <div className="finance-section-header"><div><h2>Cuentas</h2><p>El saldo sale de tus movimientos.</p></div><Button variant="ghost" onClick={() => setAccountEditor('new')}>Nueva cuenta</Button></div>
-        {accountRows.length === 0 ? <p className="finance-empty">Crea una cuenta para registrar tu primer movimiento.</p> : <div className="account-list">{accountRows.map(({ account, balanceCents }) => <button className="account-row" key={account.id} onClick={() => setAccountEditor(account)}><span><strong>{account.name}</strong><small>{accountKindLabel(account.kind)}</small></span><b className="money-value">{formatUsdCents(balanceCents)}</b></button>)}</div>}
+        {accountRows.length === 0 ? <EmptyState title="Aún no hay cuentas." description="Crea la primera para registrar tus movimientos." /> : <div className="account-list">{accountRows.map(({ account, balanceCents }) => <button className="account-row" key={account.id} onClick={() => setAccountEditor(account)}><span><strong>{account.name}</strong><small>{accountKindLabel(account.kind)}</small></span><b className="money-value">{formatUsdCents(balanceCents)}</b></button>)}</div>}
       </Card><p className="finance-page__hint">Toca una cuenta para editarla o archivarla.</p></>}
       {tab === 'movements' && <MovementsSection accounts={accounts} categories={categories} transactions={transactions} startDay={periodStartDay} onReload={reload} onToast={(transactionId, message, action) => setToast({ id: transactionId, transactionId, message, action })} />}
       {tab === 'budget' && <BudgetSection budgets={budgets} categories={categories} transactions={transactions} today={localDate()} startDay={periodStartDay} onStartDayChange={onPeriodStartDayChange} onReload={reload} onNotice={(message) => setToast({ id: crypto.randomUUID(), message })} />}
@@ -180,6 +181,8 @@ function AccountSheet({ account, onClose, onSaved }: { account: Account | null |
 
   async function archive(): Promise<void> {
     if (!account || account === 'new') return
+    // Archivar no se puede deshacer desde la interfaz: pedir confirmación como el descarte del borrador.
+    if (!window.confirm('¿Archivar esta cuenta? Dejará de aparecer en la lista.')) return
     await db.accounts.update(account.id, { archived: true, updatedAt: new Date().toISOString(), synced: false })
     await onSaved()
   }

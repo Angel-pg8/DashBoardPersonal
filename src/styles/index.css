@@ -93,6 +93,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .finance-page__add { flex: 0 0 auto; margin-bottom: 2rem; }
 .finance-page > .tabs { margin-bottom: 2rem; }
 .finance-accounts { padding: 1.25rem; }
+.finance-accounts .empty-state { padding: 2rem .25rem 1.25rem; }
+.finance-accounts .empty-state__hex { margin-bottom: 1.25rem; }
+.finance-accounts .empty-state h2 { font-size: clamp(1.4rem, 5.5vw, 1.9rem); }
 .finance-section-header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .finance-section-header h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.03em; }
 .finance-section-header p, .finance-empty, .finance-page__hint { margin: .4rem 0 0; color: var(--color-muted); font-size: .875rem; line-height: 1.5; }
