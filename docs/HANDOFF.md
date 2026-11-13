@@ -13,6 +13,7 @@
   - "Guardar y añadir otro" limpia monto y nota, sube el scroll del sheet y vuelve a enfocar el monto (teclado numérico), conservando tipo, cuenta y fecha.
   - En Inicio, "Agregar gasto" abre el sheet de registro (estado del sheet elevado a `App`); ya no está deshabilitado.
 - **Bloque 1 completado**: Header duplicado en móvil arreglado (ocultar `.side-rail` en móvil), logo hexágono reemplazado por SVG blanco (`/logo-white.svg`). Commit `518b20b`.
+- **Bloque 2 completado**: "Disponible" en Resumen ahora usa saldo real de cuentas (`totalActiveAccountBalanceCents`: saldo inicial + ingresos − gastos ± transferencias) en lugar del cálculo basado en presupuesto. El texto "por día" muestra "Sin margen para este período" cuando disponible ≤ 0. Agregadas 6 pruebas Vitest (solo ingresos, ingresos y gastos, saldo negativo, último día del período, días restantes = 0). Commit `6a0aa1d`.
 - No hay trabajo pendiente sin confirmar en este punto.
 
 ## Avance de 2B-1
@@ -26,12 +27,12 @@
 
 ## Siguiente fase
 
-Completar el paso 3 de 2B-1: resumen en Inicio y en Finanzas. **Bloque 2 en curso**: corregir "Disponible" para usar saldo real de cuentas (no presupuesto) y mejorar texto "por día".
+Completar el paso 3 de 2B-1: resumen en Inicio y en Finanzas. **Bloque 3 en curso**: revisión visual con Impeccable/Taste a 390px (Resumen, Movimientos, Presupuesto, Cuentas).
 
 ## Verificación
 
 ```text
-npm run test    # 43 pruebas
+npm run test    # 48 pruebas
 npm run lint
 npm run build
 ```

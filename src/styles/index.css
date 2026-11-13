@@ -65,7 +65,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .input { width: 100%; min-height: 44px; border: 1px solid var(--color-line); border-radius: 10px; padding: .65rem .75rem; color: var(--color-soft); background: var(--color-charcoal); font-size: 16px; }
 .input[aria-invalid='true'] { border-color: var(--color-expense); }
 .field__error { color: var(--color-expense); font-weight: 500; }
-.chip { min-height: 36px; border: 1px solid var(--color-line); border-radius: 999px; padding: .4rem .75rem; color: var(--color-soft); background: var(--color-charcoal); font-size: .875rem; }
+.chip { min-height: 44px; border: 1px solid var(--color-line); border-radius: 999px; padding: .5rem .875rem; color: var(--color-soft); background: var(--color-charcoal); font-size: .875rem; }
 .chip--selected { border-color: var(--accent); color: var(--color-black); background: var(--accent); }
 .tabs { display: flex; gap: .25rem; overflow-x: auto; border-bottom: 1px solid var(--color-line); }
 .tabs__tab { min-height: 44px; border: 0; border-bottom: 2px solid transparent; padding: .6rem .8rem; color: var(--color-muted); background: transparent; font-weight: 650; white-space: nowrap; }
@@ -132,14 +132,14 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .budget-section { margin-top: .25rem; }
 .budget-section__header { align-items: end; }
 .budget-start-day { max-width: 13rem; margin-top: 1.25rem; }
-.budget-total { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; padding: 1.25rem; }
+.budget-total { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; padding: 1.25rem; }
 .budget-total p, .budget-total__notice { margin: 0; color: var(--color-muted); font-size: .875rem; }
 .budget-total .money-value { display: block; margin-top: .25rem; font-size: clamp(2rem, 8vw, 3rem); font-weight: 820; letter-spacing: -.05em; line-height: .95; }
 .budget-total__notice { margin-top: .75rem; color: var(--color-expense); }
 .budget-limits { margin-top: 2.5rem; }
 .budget-limits h3 { margin: 0; font-size: 1.25rem; letter-spacing: -.03em; }
 .budget-row { padding: 1.1rem 0; border-bottom: 1px solid var(--color-line); }
-.budget-row__header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.budget-row__header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .budget-row__header > div { display: grid; gap: .2rem; }
 .budget-row small, .budget-row__status { color: var(--color-muted); font-size: .8125rem; }
 .budget-progress { height: 7px; margin-top: .75rem; overflow: hidden; border-radius: 999px; background: var(--color-graphite); }
