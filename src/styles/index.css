@@ -93,7 +93,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .finance-page__add { flex: 0 0 auto; margin-bottom: 2rem; }
 .finance-page > .tabs { margin-bottom: 2rem; }
 .finance-accounts { padding: 1.25rem; }
-.finance-section-header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+.finance-section-header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .finance-section-header h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.03em; }
 .finance-section-header p, .finance-empty, .finance-page__hint { margin: .4rem 0 0; color: var(--color-muted); font-size: .875rem; line-height: 1.5; }
 .finance-section-header .button { margin-top: -.5rem; }
@@ -121,9 +121,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .summary-expense { color: var(--color-expense); }
 .summary-alerts, .summary-latest { margin-top: 2.5rem; }
 .summary-alerts h3, .summary-latest h3 { margin: 0 0 .85rem; font-size: 1.25rem; letter-spacing: -.03em; }
-.summary-alert { display: flex; justify-content: space-between; gap: 1rem; margin: 0; padding: .9rem 0; border-bottom: 1px solid var(--color-line); color: #f2c879; font-size: .875rem; line-height: 1.45; }
+.summary-alert { display: flex; justify-content: space-between; gap: 1rem; margin: 0; padding: .9rem 0; border-bottom: 1px solid var(--color-line); color: #f2c879; font-size: .875rem; line-height: 1.45; font-variant-numeric: tabular-nums; }
 .summary-alert span { text-align: right; }
 .summary-alert--exceeded { color: var(--color-expense); }
+.summary-value--negative { color: var(--color-expense); }
 .summary-transaction--income { color: var(--color-income); }
 .summary-transaction--expense { color: var(--color-expense); }
 .summary-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
