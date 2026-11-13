@@ -21,6 +21,10 @@
   - Contraste verificado: todos los tokens cumplen AA (muted/soft/line, income/expense, accent por tono).
   - Jerarquía tipográfica `clamp()` y `tabular-nums` intacta. Espaciado coherente.
   - Commit `f7773ad`.
+- **Regresiones post-Bloque 1/3 corregidas** (sesión 13-nov):
+  - **A. Barra lateral desaparecida en escritorio** — causa: `.side-rail { display: none }` quedó en la base CSS (se aplicaba a todas las anchuras) y el media query `≥1024px` no restauraba `display`. Corrección: `display: block` dentro de `@media (min-width: 1024px)`. Commit `36b539b`. Este commit también arrastró una actualización pendiente de HANDOFF de la sesión anterior (documental).
+  - **B. Logo no cargaba** — causa: `<img src="/logo-white.svg">` era ruta absoluta; con base `/DashBoardPersonal/` (GitHub Pages) resolvía fuera de la subruta (404). Corrección: `${import.meta.env.BASE_URL}logo-white.svg` en ambos headers + `width/height={30}` fijos + `alt=""`/`aria-hidden` (el texto "Ángel" es el nombre accesible). Se creó `src/vite-env.d.ts` (`/// <reference types="vite/client" />`) para tipar `import.meta.env`. Commit `48d0c45`.
+  - Selectores muertos `.brand__hex` eliminados (el hexágono decorativo sigue vivo en `home-hero::after` y `empty-state__hex`).
 - No hay trabajo pendiente sin confirmar en este punto.
 
 ## Avance de 2B-1
@@ -34,7 +38,7 @@
 
 ## Siguiente fase
 
-Completar el paso 3 de 2B-1: resumen en Inicio y en Finanzas. **Todos los 3 bloques completados**.
+Completar el paso 3 de 2B-1: resumen en Inicio y en Finanzas. **Todos los 3 bloques completados** y regresiones corregidas.
 
 ## Verificación
 
@@ -44,8 +48,25 @@ npm run lint
 npm run build
 ```
 
+### Verificación de las regresiones (13-nov, con `npm run preview` y browser real)
+
+Base de preview: `/DashBoardPersonal/`. Arnés de iframes a 390/768/1280 px (media queries evaluadas dentro de cada frame). Resultados con `getComputedStyle`:
+
+| Ancho | `.side-rail` | `.mobile-brand` | `.bottom-nav` | `.side-nav` | Logo |
+|---|---|---|---|---|---|
+| 390 | `none` | `flex` | `grid` | `none` | 200 ✓ |
+| 768 | `none` | `flex` | `grid` | `none` | 200 ✓ |
+| 1280 | `block` | `none` | `none` | `grid` | 200 ✓ |
+
+- Logo: `naturalWidth > 0`, `currentSrc = /DashBoardPersonal/logo-white.svg`, HTTP 200, consola sin errores.
+- Service worker: `dist/sw.js` incluye `logo-white.svg` en `precacheAndRoute` (carga sin conexión).
+- Capturas de pantalla revisadas a los tres anchos (una sola barra de marca visible en cada uno).
+
 ## Pruebas manuales pendientes
 
+- En PC (≥1024px): confirmar que la barra lateral con el logo blanco y el menú Inicio/Finanzas/Más se ve (regresión corregida en `36b539b`); y que no aparece header sobre el contenido.
+- En iPhone (390px): confirmar un solo header con el logo y que la barra inferior no se duplique; girar a landscape y repetir.
+- En iPhone sin conexión: abrir la app y verificar que el logo sigue visible (precache del SW) tras haberla usado con conexión antes.
 - En iPhone y PC, crear, editar y archivar cuentas; comprobar que el saldo responde a ingresos, gastos y transferencias.
 - Registrar un gasto desde Finanzas: monto, categoría, cuenta, fecha Hoy/Ayer/Otra y nota; usar "Guardar y añadir otro" y "Deshacer".
 - Probar una transferencia entre dos cuentas y un saldo inicial negativo de tarjeta.
