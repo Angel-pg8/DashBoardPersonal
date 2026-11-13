@@ -64,6 +64,8 @@ export default function App() {
   const openQuickEntry = () => { setRoute('finance'); setQuickOpen(true) }
   const page = route === 'home' ? <HomePage onFinance={() => setRoute('finance')} onQuickEntry={openQuickEntry} periodStartDay={periodStartDay} /> : route === 'finance' ? <FinancePage quickOpen={quickOpen} onQuickOpenChange={setQuickOpen} periodStartDay={periodStartDay} onPeriodStartDayChange={updatePeriodStartDay} /> : <MorePage preference={preference} setPreference={updatePreference} />
 
-  return <div className="app-shell"><aside className="side-rail"><div className="brand"><img src="/logo-white.svg" alt="" aria-hidden="true" className="brand__logo" />Ángel</div><SideNav route={route} onNavigate={setRoute} /></aside><main className="main"><div className="mobile-brand brand"><img src="/logo-white.svg" alt="" aria-hidden="true" className="brand__logo" />Ángel</div>{page}</main><BottomNav route={route} onNavigate={setRoute} /></div>
+  const logoSrc = `${import.meta.env.BASE_URL}logo-white.svg`
+
+  return <div className="app-shell"><aside className="side-rail"><div className="brand"><img src={logoSrc} alt="" aria-hidden="true" className="brand__logo" width={30} height={30} />Ángel</div><SideNav route={route} onNavigate={setRoute} /></aside><main className="main"><div className="mobile-brand brand"><img src={logoSrc} alt="" aria-hidden="true" className="brand__logo" width={30} height={30} />Ángel</div>{page}</main><BottomNav route={route} onNavigate={setRoute} /></div>
 }
 
