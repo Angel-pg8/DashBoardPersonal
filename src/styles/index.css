@@ -34,6 +34,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 
 .app-shell { min-height: 100dvh; }
 .brand { display: flex; align-items: center; gap: .7rem; color: var(--color-soft); font-size: .9rem; font-weight: 750; letter-spacing: -.02em; }
+.brand__logo { width: 30px; height: 30px; }
 .brand__hex, .empty-state__hex { clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--accent); }
 .brand__hex { width: 30px; height: 34px; }
 .main { width: min(100%, 860px); min-height: 100dvh; margin: auto; padding: calc(1.5rem + env(safe-area-inset-top)) 1.25rem calc(6.75rem + env(safe-area-inset-bottom)); }
@@ -87,6 +88,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .nav-item--active { color: var(--color-soft); }
 .nav-item--active .nav-item__mark { border-color: var(--accent); background: var(--accent); }
 .side-nav { display: none; }
+.side-rail { display: none; }
 .mobile-brand { display: flex; }
 .tone-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; margin-top: 1rem; }
 .tone-options .chip { text-align: left; }
