@@ -108,7 +108,7 @@ export function financeOverview({ accounts, budgets, categories, transactions, t
   const periodKey = financePeriodKey(today, startDay)
   const periodTransactions = transactionsForPeriod(transactions, periodKey, startDay)
   const expenseCents = totalByTypeCents(periodTransactions, 'expense')
-  const available = availableCents(totalBudgetLimitCents(budgets, periodKey), periodTransactions)
+  const available = totalActiveAccountBalanceCents(accounts, transactions)
   const alerts = categoryBudgetSummaries(categories, budgets, periodTransactions, periodKey)
     .filter((summary) => summary.status === 'warning' || summary.status === 'exceeded')
     .sort((left, right) => right.progress - left.progress)
@@ -120,7 +120,7 @@ export function financeOverview({ accounts, budgets, categories, transactions, t
     periodKey,
     availableCents: available,
     availablePerDayCents: availablePerDayForPeriodCents(available, today, startDay),
-    totalBalanceCents: totalActiveAccountBalanceCents(accounts, transactions),
+    totalBalanceCents: available,
     incomeCents: totalByTypeCents(periodTransactions, 'income'),
     expenseCents,
     alerts,

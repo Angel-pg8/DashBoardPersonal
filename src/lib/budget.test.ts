@@ -97,8 +97,51 @@ describe('budget calculations', () => {
 
   it('builds one overview from the shared period without counting transfers as income or expense', () => {
     const overview = financeOverview({ accounts: [account, { ...account, id: 'bank' }], budgets, categories, transactions, today: '2026-11-03' })
-    expect(overview).toMatchObject({ periodKey: '2026-11', availableCents: 5500, availablePerDayCents: 196, totalBalanceCents: 7000, incomeCents: 10000, expenseCents: 2500 })
+    expect(overview).toMatchObject({ periodKey: '2026-11', availableCents: 7000, availablePerDayCents: 250, totalBalanceCents: 7000, incomeCents: 10000, expenseCents: 2500 })
     expect(overview.alerts.map((alert) => alert.categoryId)).toEqual(['food'])
     expect(overview.recentTransactions.map((transaction) => transaction.id)).toEqual(['transfer', 'expense', 'income', 'previous-month'])
+  })
+
+  it('availableCents equals total account balance: only income', () => {
+    const incomeOnly: Transaction[] = [
+      { id: 'inc1', type: 'income', amountCents: 5000, categoryId: 'salary', accountId: 'cash', date: '2026-11-05', createdAt: '', updatedAt: '', synced: false },
+    ]
+    const overview = financeOverview({ accounts: [account], budgets: [], categories: [], transactions: incomeOnly, today: '2026-11-05' })
+    expect(overview.availableCents).toBe(5000)
+    expect(overview.totalBalanceCents).toBe(5000)
+  })
+
+  it('availableCents equals total account balance: income and expenses', () => {
+    const mixed: Transaction[] = [
+      { id: 'inc1', type: 'income', amountCents: 10000, categoryId: 'salary', accountId: 'cash', date: '2026-11-01', createdAt: '', updatedAt: '', synced: false },
+      { id: 'exp1', type: 'expense', amountCents: 3000, categoryId: 'food', accountId: 'cash', date: '2026-11-02', createdAt: '', updatedAt: '', synced: false },
+    ]
+    const overview = financeOverview({ accounts: [account], budgets: [], categories: [], transactions: mixed, today: '2026-11-02' })
+    expect(overview.availableCents).toBe(7000)
+    expect(overview.totalBalanceCents).toBe(7000)
+  })
+
+  it('availableCents negative when expenses exceed income', () => {
+    const negative: Transaction[] = [
+      { id: 'inc1', type: 'income', amountCents: 2000, categoryId: 'salary', accountId: 'cash', date: '2026-11-01', createdAt: '', updatedAt: '', synced: false },
+      { id: 'exp1', type: 'expense', amountCents: 5000, categoryId: 'food', accountId: 'cash', date: '2026-11-02', createdAt: '', updatedAt: '', synced: false },
+    ]
+    const overview = financeOverview({ accounts: [account], budgets: [], categories: [], transactions: negative, today: '2026-11-02' })
+    expect(overview.availableCents).toBe(-3000)
+    expect(overview.totalBalanceCents).toBe(-3000)
+  })
+
+  it('availablePerDayCents on last day of period uses one day', () => {
+    const mixed: Transaction[] = [
+      { id: 'inc1', type: 'income', amountCents: 3000, categoryId: 'salary', accountId: 'cash', date: '2026-11-01', createdAt: '', updatedAt: '', synced: false },
+    ]
+    const overview = financeOverview({ accounts: [account], budgets: [], categories: [], transactions: mixed, today: '2026-11-30', startDay: 1 })
+    expect(overview.availableCents).toBe(3000)
+    expect(overview.availablePerDayCents).toBe(3000)
+  })
+
+  it('availablePerDayCents clamps to at least one day when days remaining is zero', () => {
+    expect(availablePerDayCents(3000, 0)).toBe(3000)
+    expect(availablePerDayCents(-100, 0)).toBe(-100)
   })
 })
