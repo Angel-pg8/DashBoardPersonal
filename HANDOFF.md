@@ -31,7 +31,7 @@
 
 ## Decisiones y notas
 - `VITE_BASE` predetermina `/DashBoardPersonal/` y permite configurar otra subruta.
-- Los iconos se generan desde `public/logo-white.svg` con fondo `#050505` mediante `npm run generate-pwa-assets`.
+- Los logos viven en `public/nuevos-logos/` (blanco y negro). `npm run generate-pwa-assets` los copia a `public/logo-white.svg` / `logo-black.svg` y regenera los iconos PWA con fondo `#050505`.
 - GitHub Actions publica GitHub Pages en push a `main` y también permite ejecución manual.
 - El comando distribuido de Impeccable solo expone `detect`; `audit` y `critique` no están disponibles en esta versión. El detector no encontró problemas.
 - Las transferencias se guardan como un único movimiento y no alteran los totales de ingresos/gastos; las cuentas admiten saldo negativo.

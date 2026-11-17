@@ -9,7 +9,7 @@ export default defineConfig({
   base,
   plugins: [react(), tailwindcss(), VitePWA({
     registerType: 'autoUpdate',
-    includeAssets: ['favicon.svg', 'apple-touch-icon-180x180.png'],
+    includeAssets: ['favicon.svg', 'favicon-32x32.png', 'apple-touch-icon-180x180.png'],
     manifest: {
       name: 'Dashboard personal de Ángel',
       short_name: 'Mi espacio',

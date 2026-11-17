@@ -9,7 +9,7 @@ Una sola persona, en iPhone (uso principal, una mano, a veces sin internet) y en
 ## Qué debe sentirse
 - **Cómodo y rápido**: todo a la mano, pocos toques para registrar un gasto o una tarea.
 - **Calmado y directo**: sin adornos que estorben. Tono de "constructor": claro, sin relleno.
-- **Propio**: comparte la identidad de la página de marca personal (oscura, tipografía grande y pesada, hexágono).
+- **Propio**: comparte la identidad de la página de marca personal (oscura, tipografía grande y pesada, octágono).
 
 ## Qué NO es
 - No es una interfaz literal de "habitación" ni una app de juego.

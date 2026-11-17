@@ -5,7 +5,7 @@
 > Si un skill de diseño (Impeccable, Taste) contradice este archivo, **gana este archivo**.
 
 ## 1. Identidad [Decidido]
-Misma identidad que https://angel-pg8.github.io/Pagina-web-personal/ : base oscura, títulos enormes y pesados, texto atenuado, hexágono decorativo, tono directo.
+Misma identidad que https://angel-pg8.github.io/Pagina-web-personal/ : base oscura, títulos enormes y pesados, texto atenuado, octágono decorativo, tono directo.
 
 ### Tokens base
 ```css
@@ -41,11 +41,11 @@ No introducir colores fuera de esta lista salvo los de "Color por hora del día"
 - Superficies: `--charcoal` y `--lead`; bordes de 1px con `--line`. Evitar tarjetas dentro de tarjetas.
 - Esquinas: radio 14px en tarjetas, 10px en controles, 999px en chips.
 - Sombras: casi ninguna. La jerarquía se logra con tono de superficie y borde, no con sombras grandes.
-- **Hexágono** (`clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%)`): logo de la app, fondo del icono PWA y un detalle decorativo en la pantalla de inicio con opacidad ~0.12–0.16. Estático.
+- **Octágono** (`clip-path: polygon(29.3% 0, 70.7% 0, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0 70.7%, 0 29.3%)`): detalle decorativo en la pantalla de inicio con opacidad ~0.12–0.16 y en los estados vacíos. Estático. El logo de la app es el símbolo circular de la marca (SVG blanco o negro según el contraste del fondo).
 - Nada de resplandor que sigue al cursor en la app (no hay cursor en touch y cuesta rendimiento).
 
 ## 4. Color por hora del día [Propuesto]
-La base oscura no cambia. Solo cambia el **acento** (botones principales, foco, énfasis, un tinte muy leve en el hexágono) según la hora local.
+La base oscura no cambia. Solo cambia el **acento** (botones principales, foco, énfasis, un tinte muy leve en el octágono) según la hora local.
 
 | Franja | Horas | `data-tone` | `--accent` | Sensación |
 |---|---|---|---|---|
@@ -98,7 +98,7 @@ Español, directo, sin relleno ni signos de exclamación innecesarios. Botones c
 ## 10. Qué NO tocar
 - Los tokens base de la sección 1.
 - La fuente Inter y los pesos de título.
-- El hexágono como elemento de marca.
+- El octágono como detalle de marca.
 - La regla de navegación inferior y el máximo de 3 toques para registrar un gasto.
 - Los colores semánticos de ingreso y gasto.
 

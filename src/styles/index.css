@@ -35,7 +35,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .app-shell { min-height: 100dvh; }
 .brand { display: flex; align-items: center; gap: .7rem; color: var(--color-soft); font-size: .9rem; font-weight: 750; letter-spacing: -.02em; }
 .brand__logo { width: 30px; height: 30px; }
-.empty-state__hex { clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--accent); }
+.empty-state__octagon { clip-path: polygon(29.3% 0, 70.7% 0, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0 70.7%, 0 29.3%); background: var(--accent); }
 .main { width: min(100%, 860px); min-height: 100dvh; margin: auto; padding: calc(1.5rem + env(safe-area-inset-top)) 1.25rem calc(6.75rem + env(safe-area-inset-bottom)); }
 .page { animation: page-enter 200ms var(--ease-out); }
 .page__title { max-width: 12ch; margin: 2.8rem 0 1.8rem; font-size: clamp(2.35rem, 9vw, 4.6rem); font-weight: 820; line-height: .95; letter-spacing: -.055em; }
@@ -65,7 +65,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .tabs__tab { min-height: 44px; border: 0; border-bottom: 2px solid transparent; padding: .6rem .8rem; color: var(--color-muted); background: transparent; font-weight: 650; white-space: nowrap; }
 .tabs__tab--active { border-color: var(--accent); color: var(--color-soft); }
 .empty-state { max-width: 32rem; padding: 3rem 1rem; text-align: left; }
-.empty-state__hex { width: 42px; height: 48px; margin-bottom: 1.5rem; opacity: .78; }
+.empty-state__octagon { width: 42px; height: 48px; margin-bottom: 1.5rem; opacity: .78; }
 .empty-state h2 { max-width: 11ch; margin: 0 0 .7rem; font-size: clamp(1.75rem, 7vw, 2.6rem); font-weight: 820; line-height: .98; letter-spacing: -.04em; }
 .empty-state p { max-width: 36ch; margin: 0; color: var(--color-muted); line-height: 1.6; }
 .sheet-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; align-items: end; background: rgb(0 0 0 / .56); animation: fade-in 150ms var(--ease-out); }
@@ -94,7 +94,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .finance-page > .tabs { margin-bottom: 2rem; }
 .finance-accounts { padding: 1.25rem; }
 .finance-accounts .empty-state { padding: 2rem .25rem 1.25rem; }
-.finance-accounts .empty-state__hex { margin-bottom: 1.25rem; }
+.finance-accounts .empty-state__octagon { margin-bottom: 1.25rem; }
 .finance-accounts .empty-state h2 { font-size: clamp(1.4rem, 5.5vw, 1.9rem); }
 .finance-section-header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .finance-section-header h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.03em; }
@@ -110,7 +110,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .finance-page__hint { margin-top: .9rem; }
 .finance-summary { margin-top: .25rem; }
 .page--home .summary-available { position: relative; overflow: hidden; }
-.page--home .summary-available::before { content: ''; position: absolute; z-index: 0; top: -58px; right: -44px; width: 148px; height: 165px; background: var(--accent); opacity: .14; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); }
+.page--home .summary-available::before { content: ''; position: absolute; z-index: 0; top: -58px; right: -44px; width: 148px; height: 165px; background: var(--accent); opacity: .14; clip-path: polygon(29.3% 0, 70.7% 0, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0 70.7%, 0 29.3%); }
 .page--home .summary-available > * { position: relative; z-index: 1; }
 .summary-available { padding: 1.75rem 0 1.5rem; border-bottom: 1px solid var(--color-line); }
 .summary-available h2 { max-width: 8ch; margin: 0; font-size: clamp(2.3rem, 9vw, 4.6rem); font-weight: 820; letter-spacing: -.055em; line-height: .95; }

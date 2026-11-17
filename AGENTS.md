@@ -21,6 +21,7 @@ npm run build      # compilar (debe pasar siempre)
 npm run preview    # probar build + PWA
 npm run test       # Vitest
 npm run lint
+npm run generate-pwa-assets   # regenera logos e iconos PWA desde public/nuevos-logos/
 ```
 Antes de dar una tarea por terminada: `npm run build`, `npm run lint` y `npm run test` sin errores.
 

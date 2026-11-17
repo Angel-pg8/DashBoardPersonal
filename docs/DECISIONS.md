@@ -38,3 +38,10 @@
 - Mayúscula solo inicial en la fecha del día de Movimientos ("Viernes, 13 de noviembre") en lugar de capitalizar cada palabra.
 - Archivar una cuenta pide confirmación con `window.confirm` (nativo, offline, sin dependencias), igual que el descarte de borradores del sheet.
 - Tema de gusto abierto (sin decidir): la densidad de los filtros de Movimientos en móvil ocupa buena parte de la pantalla a 390px. Opción futura si molesta: colapsarlos tras un botón "Filtros".
+
+## Nuevo logo de marca (17-nov)
+
+- `public/nuevos-logos/` conserva los originales y es la única fuente de los logos. `npm run generate-pwa-assets` los copia a `public/logo-white.svg` y `public/logo-black.svg` y regenera los iconos con `sharp`.
+- La UI usa el logo blanco porque todas las superficies de la app son oscuras. El logo negro queda disponible para una futura superficie clara (`--color-soft`), eligiendo siempre por contraste y no por la hora.
+- Los iconos PWA son opacos con fondo `#050505`: 192 y 512 a sangre, maskable 512 con el logo al 80 % central y apple-touch 180 al 90 %. El favicon es SVG con respaldo PNG de 32 px.
+- El hexágono decorativo pasó a octágono para acompañar el símbolo circular del logo nuevo.

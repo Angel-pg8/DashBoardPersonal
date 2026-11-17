@@ -2,6 +2,7 @@
 
 ## Estado actual
 
+- Logo de marca actualizado (17-nov): `public/nuevos-logos/` es la fuente; los iconos PWA, favicon y apple-touch se regeneran con `npm run generate-pwa-assets`. El detalle hexagonal pasó a octágono. Ver `docs/DECISIONS.md`.
 - Fase en curso: 2B-1 — período, presupuesto y resumen.
 - Bloques 2A-1 a 2A-3 cerrados (ver commits `75df3ef`, 2A-2, `3ca3aba`).
 - Pulido de Finanzas cerrado (`fix(finance)`): 
