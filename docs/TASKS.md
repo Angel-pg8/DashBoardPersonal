@@ -58,11 +58,11 @@ Si Codex se queda sin cuota a mitad de fase, el siguiente bloque sin marcar pued
 ## Fase 4 — Tareas + Pomodoro ("To do")
 
 ### 4A — Datos, tipos y lógica pura (sin interfaz)
-- [ ] Subir el esquema de Dexie a versión 3 (`tasks`, `pomodoroSessions`) con migración que preserve intactos los datos de v1 y v2.
-- [ ] Tipos en `src/db/types.ts`: `Task`, `PomodoroSession`, `PomodoroSettings`, `TaskPriority` ('low' | 'medium' | 'high'), `TaskStatus`, `PomodoroSessionType`.
-- [ ] Lógica pura de tareas en `src/lib/tasks.ts` (filtrar pendientes/completadas, ordenar por 3 niveles de prioridad y fecha, alternar tarea actual exclusiva `isCurrent`, borrado lógico y cálculo de pomodoros).
-- [ ] Lógica pura de Pomodoro en `src/lib/pomodoro.ts` (cálculo de tiempo restante con marcas de tiempo `targetEndAt`, pausa acumulada sin desvío, detección de fin tras suspensión de pantalla, formato `MM:SS`, ciclo de 4 descansos, opción `autoStartBreaks` y duraciones configurables).
-- [ ] Pruebas en Vitest:
+- [x] Subir el esquema de Dexie a versión 3 (`tasks`, `pomodoroSessions`) con migración que preserve intactos los datos de v1 y v2.
+- [x] Tipos en `src/db/types.ts`: `Task`, `PomodoroSession`, `PomodoroSettings`, `TaskPriority` ('low' | 'medium' | 'high'), `TaskStatus`, `PomodoroSessionType`.
+- [x] Lógica pura de tareas en `src/lib/tasks.ts` (filtrar pendientes/completadas, ordenar por 3 niveles de prioridad y fecha, alternar tarea actual exclusiva `isCurrent`, borrado lógico y cálculo de pomodoros).
+- [x] Lógica pura de Pomodoro en `src/lib/pomodoro.ts` (cálculo de tiempo restante con marcas de tiempo `targetEndAt`, pausa acumulada sin desvío, detección de fin tras suspensión de pantalla, formato `MM:SS`, ciclo de 4 descansos, opción `autoStartBreaks` y duraciones configurables).
+- [x] Pruebas en Vitest:
   - `src/lib/tasks.test.ts`: filtros, ordenación por 3 prioridades, unicidad de tarea actual y borrado lógico.
   - `src/lib/pomodoro.test.ts`: cálculo con salto temporal simulado de 25 min (suspensión de iOS), pausas, transiciones de estado, formateo, ciclos de descanso largo y lógica de autoStartBreaks.
   - `src/db/database.test.ts`: migración Dexie v2 → v3 comprobando persistencia de cuentas y transacciones.

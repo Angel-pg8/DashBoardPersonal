@@ -3,7 +3,7 @@ import Dexie, { type Table } from 'dexie'
 import { afterEach, describe, expect, it } from 'vitest'
 import { PersonalDashboardDatabase, withSyncFields } from './database'
 import { seedDefaultAccounts, seedDefaultCategories } from './seed'
-import type { Transaction } from './types'
+import type { Account, PomodoroSession, Task, Transaction } from './types'
 
 const databases: PersonalDashboardDatabase[] = []
 function createDatabase() {
@@ -79,5 +79,86 @@ describe('local database', () => {
     databases.push(migrated)
     expect(await migrated.transactions.get(record.id)).toMatchObject(record)
     expect(migrated.accounts).toBeDefined()
+  })
+
+  it('migrates v2 data to v3 without removing existing accounts or transactions, and enables tasks and pomodoroSessions', async () => {
+    const name = `legacy-v2-${crypto.randomUUID()}`
+    class V2Database extends Dexie {
+      accounts!: Table<Account, string>
+      transactions!: Table<Transaction, string>
+
+      constructor() {
+        super(name)
+        this.version(1).stores({
+          transactions: 'id, type, categoryId, date, updatedAt, deletedAt, synced',
+          categories: 'id, kind, name, [kind+name], sortOrder, updatedAt, deletedAt, synced',
+          budgets: 'id, month, categoryId, updatedAt, deletedAt, synced',
+        })
+        this.version(2).stores({
+          accounts: 'id, name, kind, archived, updatedAt, deletedAt, synced',
+          transactions: 'id, type, categoryId, accountId, transferAccountId, date, updatedAt, deletedAt, synced',
+          categories: 'id, kind, name, [kind+name], sortOrder, updatedAt, deletedAt, synced',
+          budgets: 'id, month, categoryId, updatedAt, deletedAt, synced',
+        })
+      }
+    }
+
+    const legacy = new V2Database()
+    const accountRecord = withSyncFields({
+      name: 'Banco Principal',
+      kind: 'bank' as const,
+      openingBalanceCents: 50000,
+      archived: false,
+    })
+    const txRecord = withSyncFields({
+      type: 'expense' as const,
+      amountCents: 2500,
+      accountId: accountRecord.id,
+      categoryId: 'services',
+      date: '2026-11-23',
+    })
+
+    await legacy.accounts.add(accountRecord)
+    await legacy.transactions.add(txRecord)
+    legacy.close()
+
+    // Open database with v3 (PersonalDashboardDatabase)
+    const migrated = new PersonalDashboardDatabase(name)
+    databases.push(migrated)
+
+    // Existing accounts and transactions must remain intact
+    const fetchedAccount = await migrated.accounts.get(accountRecord.id)
+    expect(fetchedAccount).toMatchObject(accountRecord)
+
+    const fetchedTx = await migrated.transactions.get(txRecord.id)
+    expect(fetchedTx).toMatchObject(txRecord)
+
+    // New tables tasks and pomodoroSessions must be operational
+    expect(migrated.tasks).toBeDefined()
+    expect(migrated.pomodoroSessions).toBeDefined()
+
+    const taskRecord: Task = withSyncFields({
+      title: 'Diseñar interfaz',
+      status: 'pending' as const,
+      isCurrent: true,
+      priority: 'high' as const,
+      sortOrder: 1,
+    })
+    await migrated.tasks.add(taskRecord)
+    const fetchedTask = await migrated.tasks.get(taskRecord.id)
+    expect(fetchedTask).toMatchObject(taskRecord)
+
+    const sessionRecord: PomodoroSession = withSyncFields({
+      taskId: taskRecord.id,
+      type: 'focus' as const,
+      durationSeconds: 1500,
+      targetDurationSeconds: 1500,
+      startedAt: '2026-11-23T12:00:00.000Z',
+      endedAt: '2026-11-23T12:25:00.000Z',
+      completed: true,
+    })
+    await migrated.pomodoroSessions.add(sessionRecord)
+    const fetchedSession = await migrated.pomodoroSessions.get(sessionRecord.id)
+    expect(fetchedSession).toMatchObject(sessionRecord)
   })
 })

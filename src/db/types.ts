@@ -38,4 +38,37 @@ export type Budget = SyncFields & {
   limitCents: number
 }
 
+export type TaskPriority = 'low' | 'medium' | 'high'
+export type TaskStatus = 'pending' | 'completed'
+
+export type Task = SyncFields & {
+  title: string
+  status: TaskStatus
+  isCurrent: boolean
+  priority: TaskPriority
+  dueDate?: string        // Formato ISO 'YYYY-MM-DD'
+  sortOrder: number
+  completedAt?: string    // ISO 8601
+}
+
+export type PomodoroSessionType = 'focus' | 'shortBreak' | 'longBreak'
+
+export type PomodoroSession = SyncFields & {
+  taskId?: string         // Vinculado a Task.id si se corrió con tarea activa
+  type: PomodoroSessionType
+  durationSeconds: number // Segundos efectivos completados
+  targetDurationSeconds: number
+  startedAt: string       // ISO 8601
+  endedAt: string         // ISO 8601
+  completed: boolean
+}
+
+export type PomodoroSettings = {
+  focusMinutes: number       // Predeterminado: 25
+  shortBreakMinutes: number  // Predeterminado: 5
+  longBreakMinutes: number   // Predeterminado: 15
+  longBreakInterval: number  // Predeterminado: 4
+  autoStartBreaks: boolean   // Predeterminado: false (configurable mediante icono de engranaje)
+}
+
 export type NewRecord<T extends SyncFields> = Omit<T, keyof SyncFields> & Partial<Pick<T, 'id'>>

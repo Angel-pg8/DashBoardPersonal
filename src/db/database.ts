@@ -1,11 +1,13 @@
 import Dexie, { type Table } from 'dexie'
-import type { Account, Budget, Category, SyncFields, Transaction } from './types'
+import type { Account, Budget, Category, PomodoroSession, SyncFields, Task, Transaction } from './types'
 
 export class PersonalDashboardDatabase extends Dexie {
   accounts!: Table<Account, string>
   transactions!: Table<Transaction, string>
   categories!: Table<Category, string>
   budgets!: Table<Budget, string>
+  tasks!: Table<Task, string>
+  pomodoroSessions!: Table<PomodoroSession, string>
 
   constructor(name = 'dashboard-personal') {
     super(name)
@@ -21,6 +23,16 @@ export class PersonalDashboardDatabase extends Dexie {
       transactions: 'id, type, categoryId, accountId, transferAccountId, date, updatedAt, deletedAt, synced',
       categories: 'id, kind, name, [kind+name], sortOrder, updatedAt, deletedAt, synced',
       budgets: 'id, month, categoryId, updatedAt, deletedAt, synced',
+    })
+
+    // v3 adds tasks and pomodoroSessions tables and indexes without altering v1 or v2 data
+    this.version(3).stores({
+      accounts: 'id, name, kind, archived, updatedAt, deletedAt, synced',
+      transactions: 'id, type, categoryId, accountId, transferAccountId, date, updatedAt, deletedAt, synced',
+      categories: 'id, kind, name, [kind+name], sortOrder, updatedAt, deletedAt, synced',
+      budgets: 'id, month, categoryId, updatedAt, deletedAt, synced',
+      tasks: 'id, status, isCurrent, priority, dueDate, sortOrder, updatedAt, deletedAt, synced',
+      pomodoroSessions: 'id, taskId, type, completed, startedAt, endedAt, updatedAt, deletedAt, synced',
     })
   }
 }
