@@ -5,9 +5,10 @@
 ## Estado actual
 - Fase / bloque en curso: Fase 2A; 2A-1 completado. El siguiente bloque es 2A-2 (cuentas y registro rápido).
 - Último commit estable: pendiente de crear para 2A-1 al cierre de este bloque.
-- ¿Compila `npm run build`?: Sí; build, lint y 19 pruebas verificados el 2026-11-02.
+- ¿Compila `npm run build`?: Sí; build, lint y 57 pruebas verificados el 2026-11-23.
 
 ## Hecho
+- Pantalla de carga (splash) agregada en `index.html` con HTML + CSS inline (#050505, logo SVG blanco centrado inline, pulso suave con solo transform/opacity, respeto a prefers-reduced-motion, fade de 250 ms y mínimo visible de 350 ms, eliminación del DOM al montar).
 - Vite + React + TypeScript estricto, Tailwind CSS v4, ESLint y Vitest configurados.
 - Tokens de `DESIGN.md` en `@theme`, incluida Inter Variable local.
 - Color por hora local en `data-tone`; se actualiza al abrir, al volver a primer plano y cada minuto como máximo. El selector manual usa una preferencia pequeña en `localStorage` (permitida para preferencias).

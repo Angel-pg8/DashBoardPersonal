@@ -4,6 +4,7 @@ import './styles/index.css'
 import App from './App'
 import { db } from './db/database'
 import { seedDefaultAccounts, seedDefaultCategories } from './db/seed'
+import { dismissSplash } from './lib/splash'
 
 async function start(): Promise<void> {
   try {
@@ -12,6 +13,7 @@ async function start(): Promise<void> {
     console.error('No se pudieron preparar los datos iniciales.', error)
   }
   createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>)
+  dismissSplash()
 }
 
 void start()

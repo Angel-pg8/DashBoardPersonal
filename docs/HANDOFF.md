@@ -2,6 +2,7 @@
 
 ## Estado actual
 
+- Pantalla de carga (splash) implementada (23-nov): HTML y CSS inline en `index.html` con fondo `#050505`, logo SVG blanco centrado inline, animación de pulso suave (solo transform/opacity), respeto a `prefers-reduced-motion`, ocultamiento con fade de 250 ms y mínimo visible de 350 ms activado desde `src/main.tsx` mediante `dismissSplash()`, y eliminación limpia del DOM. 9 pruebas unitarias añadidas (57 pruebas en total).
 - Logo de marca actualizado (17-nov): `public/nuevos-logos/` es la fuente; los iconos PWA, favicon y apple-touch se regeneran con `npm run generate-pwa-assets`. El detalle hexagonal pasó a octágono. Ver `docs/DECISIONS.md`.
 - Fase en curso: 2B-1 — período, presupuesto y resumen.
 - Bloques 2A-1 a 2A-3 cerrados (ver commits `75df3ef`, 2A-2, `3ca3aba`).
@@ -72,7 +73,7 @@ Completar el paso 3 de 2B-1: resumen en Inicio y en Finanzas. **Todos los 3 bloq
 ## Verificación
 
 ```text
-npm run test    # 48 pruebas
+npm run test    # 57 pruebas
 npm run lint
 npm run build
 ```
@@ -93,6 +94,9 @@ Base de preview: `/DashBoardPersonal/`. Arnés de iframes a 390/768/1280 px (med
 
 ## Pruebas manuales pendientes
 
+- En iPhone y PC: abrir la app (en frío o recargando) y verificar que aparece de inmediato la pantalla splash con fondo negro (#050505), el logo blanco centrado pulsando suavemente, sin parpadeos, y desaparece con un fade suave (~250 ms) revelando la interfaz una vez montada la app.
+- En iPhone con "Reducir movimiento" activado: confirmar que el logo no pulsa y la transición de salida es limpia.
+- En iPhone en modo avión / sin conexión: verificar que la pantalla de carga se muestra y funciona de forma idéntica gracias a estar inline en el HTML.
 - En PC (≥1024px): confirmar que la barra lateral con el logo blanco y el menú Inicio/Finanzas/Más se ve (regresión corregida en `36b539b`); y que no aparece header sobre el contenido.
 - En iPhone (390px): confirmar un solo header con el logo y que la barra inferior no se duplique; girar a landscape y repetir.
 - En iPhone sin conexión: abrir la app y verificar que el logo sigue visible (precache del SW) tras haberla usado con conexión antes.
