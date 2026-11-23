@@ -45,3 +45,13 @@
 - La UI usa el logo blanco porque todas las superficies de la app son oscuras. El logo negro queda disponible para una futura superficie clara (`--color-soft`), eligiendo siempre por contraste y no por la hora.
 - Los iconos PWA son opacos con fondo `#050505`: 192 y 512 a sangre, maskable 512 con el logo al 80 % central y apple-touch 180 al 90 %. El favicon es SVG con respaldo PNG de 32 px.
 - El hexágono decorativo pasó a octágono para acompañar el símbolo circular del logo nuevo.
+
+## Fase 4 — Tareas + Pomodoro ("To do") (23-nov)
+
+- La 4.ª pestaña de navegación principal se llamará literalmente **"To do"** (en `BottomNav` para móvil y en `SideNav` para escritorio), comunicando de forma directa la combinación de lista de tareas y Pomodoro timer.
+- La pantalla "To do" unifica el Pomodoro en la parte superior y la lista de tareas en la parte inferior.
+- La configuración del temporizador (minutos de foco, descansos y la opción de auto-start) se abre mediante un botón con **icono de engranaje (⚙)** situado en la cabecera del timer en la propia pantalla, desplegando un sheet inferior liviano.
+- Tres niveles de prioridad para tareas: **Baja**, **Media** y **Alta** (`'low' | 'medium' | 'high'`).
+- El feedback sonoro al concluir sesiones de foco o descanso es sintético, generado en código mediante **Web Audio API** (0 KB, sin descargas, sin dependencias, 100% offline).
+- Transición al descanso configurable: inicio manual por defecto para no correr el descanso si el usuario no está frente al dispositivo, con opción `autoStartBreaks: true` configurable desde el engranaje.
+- Suspensión de audio en iOS Safari con pantalla apagada: aceptada para la v1 (el temporizador se utilizará sobre todo en PC y en celular con pantalla encendida o tiempo de espera indefinido). El evento `visibilitychange` actualiza el reloj de inmediato al volver a la app.
