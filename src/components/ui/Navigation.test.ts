@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest'
 import { NAV_ITEMS, type AppRoute } from './Navigation'
 
 describe('Navigation items', () => {
-  it('contiene exactamente las 3 rutas existentes de la aplicación', () => {
+  it('contiene exactamente las 4 rutas existentes de la aplicación', () => {
     const routeIds: AppRoute[] = NAV_ITEMS.map((item) => item.id)
-    expect(routeIds).toEqual(['home', 'finance', 'more'])
+    expect(routeIds).toEqual(['home', 'finance', 'todo', 'more'])
   })
 
   it('asigna un icono representativo y válido de Lucide a cada pestaña', () => {
@@ -16,7 +16,7 @@ describe('Navigation items', () => {
 
   it('mantiene etiquetas de texto claras y accesibles para cada pestaña', () => {
     const labels = NAV_ITEMS.map((item) => item.label)
-    expect(labels).toEqual(['Inicio', 'Finanzas', 'Más'])
+    expect(labels).toEqual(['Inicio', 'Finanzas', 'To do', 'Más'])
   })
 
   it('no contiene rutas vacías o identificadores duplicados', () => {

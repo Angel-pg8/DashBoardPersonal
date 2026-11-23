@@ -1,6 +1,6 @@
-import { LayoutDashboard, Wallet, Ellipsis, type LucideIcon } from 'lucide-react'
+import { Ellipsis, LayoutDashboard, ListTodo, Wallet, type LucideIcon } from 'lucide-react'
 
-export type AppRoute = 'home' | 'finance' | 'more'
+export type AppRoute = 'home' | 'finance' | 'todo' | 'more'
 
 export interface NavItem {
   id: AppRoute
@@ -11,6 +11,7 @@ export interface NavItem {
 export const NAV_ITEMS: readonly NavItem[] = [
   { id: 'home', label: 'Inicio', icon: LayoutDashboard },
   { id: 'finance', label: 'Finanzas', icon: Wallet },
+  { id: 'todo', label: 'To do', icon: ListTodo },
   { id: 'more', label: 'Más', icon: Ellipsis },
 ] as const
 

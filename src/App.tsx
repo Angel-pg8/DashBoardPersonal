@@ -3,10 +3,13 @@ import { BottomNav, type AppRoute, SideNav } from './components/ui/Navigation'
 import { Card } from './components/ui/Card'
 import { Chip } from './components/ui/Chip'
 import { db } from './db/database'
-import type { Account, Budget, Category, Transaction } from './db/types'
+import type { Account, Budget, Category, PomodoroSession, Task, Transaction } from './db/types'
 import { SummarySection } from './features/finance/SummarySection'
+import { CurrentTaskCard } from './features/tasks/CurrentTaskCard'
 import { resolveTone, type TonePreference } from './lib/tone'
 import { FinancePage } from './features/finance/FinancePage'
+import { TasksPage } from './features/tasks/TasksPage'
+import { getCurrentTask } from './lib/tasks'
 
 const preferenceKey = 'dashboard-tone-preference'
 const financePeriodStartDayKey = 'dashboard-finance-period-start-day'
@@ -29,15 +32,47 @@ function localDate(): string {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 }
 
-function HomePage({ onFinance, onQuickEntry, periodStartDay }: { onFinance: () => void; onQuickEntry: () => void; periodStartDay: number }) {
+function HomePage({ onFinance, onQuickEntry, onGoToTodo, periodStartDay }: { onFinance: () => void; onQuickEntry: () => void; onGoToTodo: () => void; periodStartDay: number }) {
   const [accounts, setAccounts] = useState<Account[]>([])
   const [budgets, setBudgets] = useState<Budget[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [sessions, setSessions] = useState<PomodoroSession[]>([])
 
-  useEffect(() => { void Promise.all([db.accounts.toArray(), db.budgets.toArray(), db.categories.toArray(), db.transactions.toArray()]).then(([nextAccounts, nextBudgets, nextCategories, nextTransactions]) => { setAccounts(nextAccounts); setBudgets(nextBudgets); setCategories(nextCategories); setTransactions(nextTransactions) }) }, [])
+  useEffect(() => {
+    void Promise.all([
+      db.accounts.toArray(),
+      db.budgets.toArray(),
+      db.categories.toArray(),
+      db.transactions.toArray(),
+      db.tasks.toArray(),
+      db.pomodoroSessions.toArray(),
+    ]).then(([nextAccounts, nextBudgets, nextCategories, nextTransactions, nextTasks, nextSessions]) => {
+      setAccounts(nextAccounts)
+      setBudgets(nextBudgets)
+      setCategories(nextCategories)
+      setTransactions(nextTransactions)
+      setTasks(nextTasks)
+      setSessions(nextSessions)
+    })
+  }, [])
 
-  return <div className="page page--home"><h1 className="page__title">Tu día, claro.</h1><SummarySection accounts={accounts} budgets={budgets} categories={categories} transactions={transactions} today={localDate()} startDay={periodStartDay} onQuickEntry={onQuickEntry} onFinance={onFinance} /></div>
+  const currentTask = getCurrentTask(tasks)
+  const today = localDate()
+
+  return (
+    <div className="page page--home">
+      <h1 className="page__title">Tu día, claro.</h1>
+      <CurrentTaskCard
+        currentTask={currentTask}
+        sessions={sessions}
+        today={today}
+        onGoToTodo={onGoToTodo}
+      />
+      <SummarySection accounts={accounts} budgets={budgets} categories={categories} transactions={transactions} today={localDate()} startDay={periodStartDay} onQuickEntry={onQuickEntry} onFinance={onFinance} />
+    </div>
+  )
 }
 
 function MorePage({ preference, setPreference }: { preference: TonePreference; setPreference: (preference: TonePreference) => void }) {
@@ -66,10 +101,14 @@ export default function App() {
   const openQuickEntry = () => { setQuickReturn(route === 'finance' ? 'finance' : 'home'); setRoute('finance'); setQuickOpen(true) }
   const changeQuickOpen = (open: boolean) => { setQuickOpen(open); if (!open) setRoute(quickReturn) }
   const onQuickSaved = (keepOpen: boolean) => { if (keepOpen) setQuickReturn('finance') }
-  const page = route === 'home' ? <HomePage onFinance={() => setRoute('finance')} onQuickEntry={openQuickEntry} periodStartDay={periodStartDay} /> : route === 'finance' ? <FinancePage quickOpen={quickOpen} onQuickOpenChange={changeQuickOpen} onQuickSaved={onQuickSaved} periodStartDay={periodStartDay} onPeriodStartDayChange={updatePeriodStartDay} /> : <MorePage preference={preference} setPreference={updatePreference} />
+
+  const page =
+    route === 'home' ? <HomePage onFinance={() => setRoute('finance')} onQuickEntry={openQuickEntry} onGoToTodo={() => setRoute('todo')} periodStartDay={periodStartDay} /> :
+    route === 'finance' ? <FinancePage quickOpen={quickOpen} onQuickOpenChange={changeQuickOpen} onQuickSaved={onQuickSaved} periodStartDay={periodStartDay} onPeriodStartDayChange={updatePeriodStartDay} /> :
+    route === 'todo' ? <TasksPage /> :
+    <MorePage preference={preference} setPreference={updatePreference} />
 
   const logoSrc = `${import.meta.env.BASE_URL}logo-white.svg`
 
   return <div className="app-shell"><aside className="side-rail"><div className="brand"><img src={logoSrc} alt="" aria-hidden="true" className="brand__logo" width={30} height={30} />Ángel</div><SideNav route={route} onNavigate={setRoute} /></aside><main className="main"><div className="mobile-brand brand"><img src={logoSrc} alt="" aria-hidden="true" className="brand__logo" width={30} height={30} />Ángel</div>{page}</main>{(route === 'home' || route === 'finance') && <button type="button" className="fab" aria-label="Agregar gasto" onClick={openQuickEntry}><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M11 3.5v15M3.5 11h15" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" /></svg></button>}<BottomNav route={route} onNavigate={setRoute} /></div>
 }
-
