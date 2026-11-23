@@ -82,17 +82,17 @@ Si Codex se queda sin cuota a mitad de fase, el siguiente bloque sin marcar pued
 **Aceptación:** el temporizador no se desfasa al bloquear y desbloquear el iPhone; guarda sesiones completadas en Dexie; solicita y libera Wake Lock limpiamente; icono de engranaje abre y guarda configuración; `npm run build`, `lint` y `test` pasan.
 
 ### 4C — Tareas: Lista, alta rápida y asignación de tarea actual
-- [ ] Componentes de lista de tareas (`TaskList`, `TaskItem`):
+- [x] Componentes de lista de tareas (`TaskList`, `TaskItem`):
   - Checkbox táctil (hit area ≥44×44 px) para completar o desmarcar.
   - Título, badges discretos de prioridad de 3 niveles (Baja / Media / Alta) y fecha de vencimiento (hoy / mañana / fecha).
   - Contador de pomodoros completados en cada tarea (`2 pomodoros`).
   - Acción de 1 toque para marcar como "tarea actual" (`isCurrent: true`), reflejándose de inmediato en el Pomodoro.
   - Borrado lógico (`deletedAt`) con confirmación o Deshacer.
-- [ ] Bottom Sheet de alta y edición rápida (`TaskSheet`):
+- [x] Bottom Sheet de alta y edición rápida (`TaskSheet`):
   - Input de título enfocado automáticamente.
   - Chips de selección de 3 prioridades (Baja / Media / Alta) y fecha de vencimiento.
   - Checkbox para fijar de inmediato como tarea actual.
-- [ ] Filtros rápidos por chip: "Pendientes" y "Completadas".
+- [x] Filtros rápidos por chip: "Pendientes" y "Completadas".
 **Archivos:** `src/features/tasks/TaskList.tsx`, `src/features/tasks/TaskItem.tsx`, `src/features/tasks/TaskSheet.tsx`, `src/styles/index.css`.
 **Aceptación:** crear una tarea toma 2 toques; selector de 3 prioridades funcional; marcar como actual actualiza el timer de inmediato; la lista responde con fluidez a una mano; `npm run build`, `lint` y `test` pasan.
 

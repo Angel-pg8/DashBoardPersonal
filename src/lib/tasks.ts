@@ -191,3 +191,27 @@ export function taskWithPomodoroCount(
     pomodoroCount: countsByTaskId.get(task.id) ?? 0,
   }))
 }
+
+export function formatTaskDueDate(
+  dueDate?: string,
+  referenceDate = new Date(),
+): string | undefined {
+  if (!dueDate) return undefined
+
+  const todayIso = `${referenceDate.getFullYear()}-${String(referenceDate.getMonth() + 1).padStart(2, '0')}-${String(referenceDate.getDate()).padStart(2, '0')}`
+
+  const tomorrow = new Date(referenceDate)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  const tomorrowIso = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`
+
+  if (dueDate === todayIso) return 'Hoy'
+  if (dueDate === tomorrowIso) return 'Mañana'
+
+  const parts = dueDate.split('-')
+  if (parts.length === 3) {
+    const [, month, day] = parts
+    return `${Number(day)}/${Number(month)}`
+  }
+
+  return dueDate
+}

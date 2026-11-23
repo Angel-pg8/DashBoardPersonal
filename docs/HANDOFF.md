@@ -2,6 +2,13 @@
 
 ## Estado actual
 
+- **Fase 4C completada — Tareas: Lista, alta rápida y asignación de tarea actual (23-nov)**:
+  - Componente `TaskItem`: fila de tarea con checkbox táctil accesible (≥44×44 px), título legible (tachado en completada), badges de prioridad de 3 niveles con símbolos y texto explícito (`▲ Alta`, `▬ Media`, `▼ Baja`) aptos para daltónicos, fecha relativa (`formatTaskDueDate`: Hoy, Mañana, D/M) y contador de pomodoros vinculados.
+  - Acción de 1 toque para fijar tarea actual (`isCurrent: true`) con icono de llama (`Flame`) y badge "Actual".
+  - Edición y borrado lógico (`deletedAt`) con confirmación segura.
+  - Componente `TaskSheet`: bottom sheet para alta y edición rápida con autofocus en el título, selector de 3 prioridades, chips de fecha rápida (Hoy/Mañana/Sin fecha/Otra con date input) y toggle para fijar como tarea actual.
+  - Componente `TaskList`: filtros por chip para "Pendientes" y "Completadas" con contadores, botón destacado de "Nueva tarea" y estados vacíos claros.
+  - Helper puro `formatTaskDueDate` añadido en `src/lib/tasks.ts` con prueba unitaria (89 pruebas pasando en total).
 - **Fase 4B completada — Pomodoro: Temporizador resiliente y control de sesión (23-nov)**:
   - Componente `PomodoroTimer` con selector de modalidad (Foco, Descanso corto, Descanso largo), dígitos tabulares (`font-variant-numeric: tabular-nums`) grandes, controles táctiles (≥44×44 px) de inicio/pausa/reanudación/reinicio/salto, e indicador de 4 pomodoros hacia el descanso largo (`● ● ○ ○` con texto accesible).
   - Configuración mediante engranaje (⚙) en cabecera con sheet inferior `PomodoroSettingsSheet`: duraciones ajustables y auto-start de descansos, persistidos en `localStorage` con fallback seguro a defaults.

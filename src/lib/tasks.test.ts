@@ -7,6 +7,7 @@ import {
   filterActiveTasks,
   filterCompletedTasks,
   filterPendingTasks,
+  formatTaskDueDate,
   getCurrentTask,
   priorityWeight,
   restoreTask,
@@ -221,5 +222,14 @@ describe('tasks logic', () => {
     expect(enriched.find((t) => t.id === 't1')?.pomodoroCount).toBe(2)
     expect(enriched.find((t) => t.id === 't2')?.pomodoroCount).toBe(1)
     expect(enriched.find((t) => t.id === 't3')?.pomodoroCount).toBe(0)
+  })
+
+  it('formats task due date relative to reference date', () => {
+    const ref = new Date('2026-11-23T12:00:00.000Z')
+    expect(formatTaskDueDate(undefined, ref)).toBeUndefined()
+    expect(formatTaskDueDate('2026-11-23', ref)).toBe('Hoy')
+    expect(formatTaskDueDate('2026-11-24', ref)).toBe('Mañana')
+    expect(formatTaskDueDate('2026-11-28', ref)).toBe('28/11')
+    expect(formatTaskDueDate('invalid-date', ref)).toBe('invalid-date')
   })
 })
