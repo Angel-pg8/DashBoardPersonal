@@ -2,6 +2,7 @@
 
 ## Estado actual
 
+- **Iconos en la barra de navegación integrados con Lucide (23-nov)**: Reemplazo de los puntos huecos en `BottomNav` y `SideNav` por iconos semánticos offline (`LayoutDashboard` para Inicio, `Wallet` para Finanzas, `Ellipsis` para Más) desde `lucide-react`. Tamaño 24px, strokeWidth uniforme de 2 y color con `currentColor`. Estado activo diferenciado de forma accesible sin depender solo del color (peso tipográfico 750 vs 500, opacidad y píldora indicadora `.nav-item__indicator` animada únicamente con `transform`/`opacity`). Accesibilidad garantizada con `aria-label`, `aria-current="page"`, `aria-hidden="true"` en iconos, hit area mínima de 44×44 px y safe areas de iOS respetadas. 4 pruebas unitarias añadidas (61 pruebas en total).
 - **Planificación de la Fase 4 (Tareas + Pomodoro) completada (23-nov)**: Especificación funcional, técnica y modelo de datos documentados en `docs/SPEC.md`; desglose en 4 subfases modulares y committeables (4A a 4D) con criterios de aceptación en `docs/TASKS.md`. Listo para arrancar la implementación en 4A sin tocar código en esta sesión.
 - Pantalla de carga (splash) implementada (23-nov): HTML y CSS inline en `index.html` con fondo `#050505`, logo SVG blanco centrado inline, animación de pulso suave (solo transform/opacity), respeto a `prefers-reduced-motion`, ocultamiento con fade de 250 ms y mínimo visible de 350 ms activado desde `src/main.tsx` mediante `dismissSplash()`, y eliminación limpia del DOM. 9 pruebas unitarias añadidas (57 pruebas en total).
 - Logo de marca actualizado (17-nov): `public/nuevos-logos/` es la fuente; los iconos PWA, favicon y apple-touch se regeneran con `npm run generate-pwa-assets`. El detalle hexagonal pasó a octágono. Ver `docs/DECISIONS.md`.
@@ -78,7 +79,7 @@ Revisión con Impeccable/Taste (dial de movimiento bajo) y aplicación solo de a
 ## Verificación
 
 ```text
-npm run test    # 57 pruebas
+npm run test    # 61 pruebas
 npm run lint
 npm run build
 ```
@@ -99,6 +100,7 @@ Base de preview: `/DashBoardPersonal/`. Arnés de iframes a 390/768/1280 px (med
 
 ## Pruebas manuales pendientes
 
+- En iPhone y PC: verificar los nuevos iconos en la barra de navegación (Inicio con LayoutDashboard, Finanzas con Wallet, Más con Ellipsis). Confirmar que el estado activo se distingue nítidamente sin depender solo del color (píldora indicadora visible en móvil, texto en negrita y opacidad completa). Verificar que el área táctil responde cómodamente (mínimo 44×44 px) y que la barra inferior respeta la safe area del iPhone sin solapar con la barra de inicio ni con el FAB.
 - En iPhone y PC: abrir la app (en frío o recargando) y verificar que aparece de inmediato la pantalla splash con fondo negro (#050505), el logo blanco centrado pulsando suavemente, sin parpadeos, y desaparece con un fade suave (~250 ms) revelando la interfaz una vez montada la app.
 - En iPhone con "Reducir movimiento" activado: confirmar que el logo no pulsa y la transición de salida es limpia.
 - En iPhone en modo avión / sin conexión: verificar que la pantalla de carga se muestra y funciona de forma idéntica gracias a estar inline en el HTML.
