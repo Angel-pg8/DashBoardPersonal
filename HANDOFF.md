@@ -3,11 +3,15 @@
 > Lo actualiza Codex (o quien trabaje) al terminar cada bloque. Si Codex se queda sin cuota, Cursor/OpenCode/modelo local retoman desde aquí.
 
 ## Estado actual
-- Fase / bloque en curso: Fase 2A; 2A-1 completado. El siguiente bloque es 2A-2 (cuentas y registro rápido).
-- Último commit estable: pendiente de crear para 2A-1 al cierre de este bloque.
+- Fase / bloque en curso: Planificación de Fase 4 (Tareas + Pomodoro) completada documentalmente en `docs/SPEC.md` y `docs/TASKS.md`.
+- Siguiente bloque: Fase 4A (Datos, tipos y lógica pura sin interfaz).
+- Último commit estable: `288bc14` (`feat: pantalla de carga splash con logo del proyecto`).
 - ¿Compila `npm run build`?: Sí; build, lint y 57 pruebas verificados el 2026-11-23.
 
 ## Hecho
+- Planificación completa de la Fase 4 (Tareas + Pomodoro):
+  - Alcance v1 vs "después", pantallas y flujos (móvil y PC), modelo de datos para Dexie v3 con campos de sincronización (`SyncFields`), resiliencia a suspensión en iOS con cálculo basado en timestamps (`targetEndAt`), Wake Lock opcional, Web Audio API y vinculación de sesiones documentados en `docs/SPEC.md`.
+  - Fase 4 desglosada en subfases committeables (4A a 4D) con criterios de aceptación, archivos a tocar y pruebas en `docs/TASKS.md`.
 - Pantalla de carga (splash) agregada en `index.html` con HTML + CSS inline (#050505, logo SVG blanco centrado inline, pulso suave con solo transform/opacity, respeto a prefers-reduced-motion, fade de 250 ms y mínimo visible de 350 ms, eliminación del DOM al montar).
 - Vite + React + TypeScript estricto, Tailwind CSS v4, ESLint y Vitest configurados.
 - Tokens de `DESIGN.md` en `@theme`, incluida Inter Variable local.
@@ -21,7 +25,11 @@
 - La lógica financiera está en `src/lib/money.ts` y `src/lib/budget.ts`, con pruebas para conversión sin flotantes, transferencias, borrado lógico, cambio de mes y saldo negativo.
 
 ## Sigue (siguiente bloque exacto)
-- Fase 2A-2: pantalla de Finanzas para crear, editar y archivar cuentas; registro rápido en sheet con el importe enfocado y teclado numérico, guardado local, deshacer y máximo tres toques para un gasto típico.
+- Fase 4A — Tareas + Pomodoro: Datos, tipos y lógica pura (sin interfaz):
+  - Subir Dexie a v3 (`tasks`, `pomodoroSessions`) con migración que preserve datos v1 y v2.
+  - Tipos en `src/db/types.ts`.
+  - Lógica pura de tareas (`src/lib/tasks.ts`) y de temporizador (`src/lib/pomodoro.ts`) con pruebas exhaustivas en Vitest (especialmente suspensión en iOS con marcas de tiempo).
+  - Pruebas de migración en `src/db/database.test.ts`.
 
 ## Cómo probar
 - `npm install`

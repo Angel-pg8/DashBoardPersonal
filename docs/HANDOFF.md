@@ -2,6 +2,7 @@
 
 ## Estado actual
 
+- **Planificación de la Fase 4 (Tareas + Pomodoro) completada (23-nov)**: Especificación funcional, técnica y modelo de datos documentados en `docs/SPEC.md`; desglose en 4 subfases modulares y committeables (4A a 4D) con criterios de aceptación en `docs/TASKS.md`. Listo para arrancar la implementación en 4A sin tocar código en esta sesión.
 - Pantalla de carga (splash) implementada (23-nov): HTML y CSS inline en `index.html` con fondo `#050505`, logo SVG blanco centrado inline, animación de pulso suave (solo transform/opacity), respeto a `prefers-reduced-motion`, ocultamiento con fade de 250 ms y mínimo visible de 350 ms activado desde `src/main.tsx` mediante `dismissSplash()`, y eliminación limpia del DOM. 9 pruebas unitarias añadidas (57 pruebas en total).
 - Logo de marca actualizado (17-nov): `public/nuevos-logos/` es la fuente; los iconos PWA, favicon y apple-touch se regeneran con `npm run generate-pwa-assets`. El detalle hexagonal pasó a octágono. Ver `docs/DECISIONS.md`.
 - Fase en curso: 2B-1 — período, presupuesto y resumen.
@@ -68,7 +69,11 @@ Revisión con Impeccable/Taste (dial de movimiento bajo) y aplicación solo de a
 
 ## Siguiente fase
 
-Completar el paso 3 de 2B-1: resumen en Inicio y en Finanzas. **Todos los 3 bloques completados** y regresiones corregidas.
+- **Fase 4A — Tareas + Pomodoro: Datos, tipos y lógica pura (sin interfaz)**:
+  - Subir versión de Dexie a v3 (`tasks`, `pomodoroSessions`) con migración que preserve datos previos de v1 y v2.
+  - Tipos en `src/db/types.ts`: `Task`, `PomodoroSession`, `PomodoroSettings`, `TaskPriority`, `TaskStatus`, `PomodoroSessionType`.
+  - Lógica pura en `src/lib/tasks.ts` y `src/lib/pomodoro.ts` con pruebas en Vitest (incluyendo cálculo con timestamps y salto temporal por suspensión en iOS).
+  - Pruebas de migración v2 → v3 en `src/db/database.test.ts`.
 
 ## Verificación
 
