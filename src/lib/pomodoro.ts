@@ -251,3 +251,46 @@ export function formatTimerDisplay(totalSeconds: number): string {
   const seconds = clamped % 60
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
 }
+
+export const POMODORO_SETTINGS_STORAGE_KEY = 'dashboard-pomodoro-settings'
+
+export function loadPomodoroSettings(): PomodoroSettings {
+  if (typeof localStorage === 'undefined') {
+    return DEFAULT_POMODORO_SETTINGS
+  }
+
+  try {
+    const raw = localStorage.getItem(POMODORO_SETTINGS_STORAGE_KEY)
+    if (!raw) return DEFAULT_POMODORO_SETTINGS
+    const parsed = JSON.parse(raw) as Partial<PomodoroSettings>
+    return {
+      focusMinutes:
+        typeof parsed.focusMinutes === 'number' && parsed.focusMinutes > 0
+          ? parsed.focusMinutes
+          : DEFAULT_POMODORO_SETTINGS.focusMinutes,
+      shortBreakMinutes:
+        typeof parsed.shortBreakMinutes === 'number' && parsed.shortBreakMinutes > 0
+          ? parsed.shortBreakMinutes
+          : DEFAULT_POMODORO_SETTINGS.shortBreakMinutes,
+      longBreakMinutes:
+        typeof parsed.longBreakMinutes === 'number' && parsed.longBreakMinutes > 0
+          ? parsed.longBreakMinutes
+          : DEFAULT_POMODORO_SETTINGS.longBreakMinutes,
+      longBreakInterval:
+        typeof parsed.longBreakInterval === 'number' && parsed.longBreakInterval > 0
+          ? parsed.longBreakInterval
+          : DEFAULT_POMODORO_SETTINGS.longBreakInterval,
+      autoStartBreaks:
+        typeof parsed.autoStartBreaks === 'boolean'
+          ? parsed.autoStartBreaks
+          : DEFAULT_POMODORO_SETTINGS.autoStartBreaks,
+    }
+  } catch {
+    return DEFAULT_POMODORO_SETTINGS
+  }
+}
+
+export function savePomodoroSettings(settings: PomodoroSettings): void {
+  if (typeof localStorage === 'undefined') return
+  localStorage.setItem(POMODORO_SETTINGS_STORAGE_KEY, JSON.stringify(settings))
+}

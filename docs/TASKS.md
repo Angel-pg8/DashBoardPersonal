@@ -70,14 +70,14 @@ Si Codex se queda sin cuota a mitad de fase, el siguiente bloque sin marcar pued
 **Aceptación:** `npm run build`, `lint` y `test` pasan; 100 % de la lógica y la migración cubiertas sin interfaz gráfica.
 
 ### 4B — Pomodoro: Temporizador resiliente y control de sesión
-- [ ] Componente `PomodoroTimer` con selector de modalidad (Foco 25m, Descanso corto 5m, Descanso largo 15m), visor con números tabulares (`font-variant-numeric: tabular-nums`) y controles táctiles de 44×44 px.
-- [ ] Botón de icono de engranaje (⚙) accesible en la cabecera del timer que abre el sheet inferior de configuración (`PomodoroSettingsSheet`) para ajustar minutos de foco/descansos y el switch de auto-start de descansos.
-- [ ] Resiliencia a suspensión en iOS: listener de `visibilitychange` y `focus` que invoca la lógica de recálculo por timestamp al regresar al primer plano.
-- [ ] Helper defensivo de Screen Wake Lock (`src/lib/wakeLock.ts`): solicita mantener la pantalla encendida mientras el foco corre; se libera al pausar/completar o en caso de no estar soportado por el navegador/dispositivo.
-- [ ] Helper defensivo de Web Audio API (`src/lib/sound.ts`): reproduce un tono sintético suave al terminar la sesión sin depender de descargas ni archivos de audio (generado por código).
-- [ ] Guardado automático de la sesión en Dexie (`pomodoroSessions`) al completarse, vinculando la `taskId` activa.
-- [ ] Indicador visual del ciclo de 4 pomodoros hacia el descanso largo (`● ● ○ ○`).
-- [ ] Estilos con tokens de `DESIGN.md` (sin colores hardcodeados).
+- [x] Componente `PomodoroTimer` con selector de modalidad (Foco 25m, Descanso corto 5m, Descanso largo 15m), visor con números tabulares (`font-variant-numeric: tabular-nums`) y controles táctiles de 44×44 px.
+- [x] Botón de icono de engranaje (⚙) accesible en la cabecera del timer que abre el sheet inferior de configuración (`PomodoroSettingsSheet`) para ajustar minutos de foco/descansos y el switch de auto-start de descansos.
+- [x] Resiliencia a suspensión en iOS: listener de `visibilitychange` y `focus` que invoca la lógica de recálculo por timestamp al regresar al primer plano.
+- [x] Helper defensivo de Screen Wake Lock (`src/lib/wakeLock.ts`): solicita mantener la pantalla encendida mientras el foco corre; se libera al pausar/completar o en caso de no estar soportado por el navegador/dispositivo.
+- [x] Helper defensivo de Web Audio API (`src/lib/sound.ts`): reproduce un tono sintético suave al terminar la sesión sin depender de descargas ni archivos de audio (generado por código).
+- [x] Guardado automático de la sesión en Dexie (`pomodoroSessions`) al completarse, vinculando la `taskId` activa.
+- [x] Indicador visual del ciclo de 4 pomodoros hacia el descanso largo (`● ● ○ ○`).
+- [x] Estilos con tokens de `DESIGN.md` (sin colores hardcodeados).
 **Archivos:** `src/features/tasks/PomodoroTimer.tsx`, `src/features/tasks/PomodoroSettingsSheet.tsx`, `src/lib/wakeLock.ts`, `src/lib/wakeLock.test.ts`, `src/lib/sound.ts`, `src/lib/sound.test.ts`, `src/styles/index.css`.
 **Aceptación:** el temporizador no se desfasa al bloquear y desbloquear el iPhone; guarda sesiones completadas en Dexie; solicita y libera Wake Lock limpiamente; icono de engranaje abre y guarda configuración; `npm run build`, `lint` y `test` pasan.
 

@@ -180,6 +180,38 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .quick-entry__actions { display: grid; gap: .6rem; margin-top: .25rem; }
 .quick-entry__actions .button { justify-content: center; }
 .archive-button { color: var(--color-expense); }
+.pomodoro-hero { padding: 1.5rem; display: grid; gap: 1.25rem; }
+.pomodoro-hero__header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+.pomodoro-hero__eyebrow { color: var(--color-muted); font-size: .8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.pomodoro-hero__title { margin: .2rem 0 0; font-size: 1.5rem; font-weight: 820; letter-spacing: -.03em; }
+.pomodoro-hero__modes { display: flex; flex-wrap: wrap; gap: .5rem; }
+.pomodoro-hero__display { display: grid; gap: .4rem; padding: 1rem 0; border-top: 1px solid var(--color-line); border-bottom: 1px solid var(--color-line); }
+.pomodoro-hero__time { font-size: clamp(3.2rem, 13vw, 5rem); font-weight: 820; font-variant-numeric: tabular-nums; line-height: .92; letter-spacing: -.05em; color: var(--color-soft); }
+.pomodoro-hero__status-badge { display: inline-flex; align-items: center; gap: .5rem; color: var(--color-muted); font-size: .875rem; font-weight: 600; }
+.pomodoro-hero__status-indicator { width: 8px; height: 8px; border-radius: 99px; background: var(--color-muted); }
+.pomodoro-hero__status-indicator--running { background: var(--accent); }
+.pomodoro-hero__status-indicator--paused { background: #f2c879; }
+.pomodoro-hero__status-indicator--completed { background: var(--color-income); }
+.pomodoro-hero__task { padding: .75rem 1rem; border: 1px solid var(--color-line); border-radius: 10px; background: var(--color-charcoal); font-size: .875rem; }
+.pomodoro-hero__task-active { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; }
+.pomodoro-hero__task-label { color: var(--color-muted); font-size: .8125rem; }
+.pomodoro-hero__task-name { color: var(--color-soft); font-weight: 700; flex: 1 1 auto; }
+.pomodoro-hero__task-detach { min-height: 44px; padding: 0 .5rem; border: 0; background: transparent; color: var(--color-muted); font-size: .8125rem; text-decoration: underline; cursor: pointer; }
+.pomodoro-hero__task-detach:hover { color: var(--color-soft); }
+.pomodoro-hero__task-empty { margin: 0; color: var(--color-muted); font-size: .875rem; }
+.pomodoro-hero__cycles { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; }
+.pomodoro-hero__cycle-dots { display: flex; gap: .4rem; }
+.pomodoro-hero__cycle-dot { width: 14px; height: 6px; border-radius: 99px; border: 1px solid var(--color-line); background: var(--color-graphite); transition: background-color 150ms var(--ease-out), border-color 150ms var(--ease-out); }
+.pomodoro-hero__cycle-dot--filled { background: var(--accent); border-color: var(--accent); }
+.pomodoro-hero__cycle-text { color: var(--color-muted); font-size: .8125rem; font-variant-numeric: tabular-nums; }
+.pomodoro-hero__controls { display: flex; flex-wrap: wrap; gap: .75rem; }
+.pomodoro-hero__main-button { min-width: 140px; }
+.pomodoro-hero__secondary-button { min-width: 90px; }
+.pomodoro-settings__toggle { display: flex; align-items: start; gap: .75rem; cursor: pointer; color: var(--color-soft); font-size: .875rem; }
+.pomodoro-settings__checkbox { width: 22px; height: 22px; margin-top: .1rem; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+.pomodoro-settings__toggle-label { display: grid; gap: .2rem; }
+.pomodoro-settings__toggle-label strong { font-size: .9375rem; font-weight: 650; }
+.pomodoro-settings__toggle-label small { color: var(--color-muted); font-size: .8125rem; line-height: 1.4; }
 .toast { position: fixed; z-index: 30; right: 1rem; bottom: calc(5.4rem + env(safe-area-inset-bottom)); left: 1rem; display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .8rem 1rem; border: 1px solid var(--color-line); border-radius: 10px; color: var(--color-soft); background: var(--color-graphite); font-size: .875rem; overflow: hidden; animation: toast-in 200ms var(--ease-out); }
 .toast button { min-height: 44px; padding: 0 .375rem; border: 0; color: var(--accent); background: transparent; font-weight: 750; }
 .toast button:last-of-type { color: var(--color-soft); font-size: 1.15rem; }

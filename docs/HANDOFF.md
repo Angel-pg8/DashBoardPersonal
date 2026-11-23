@@ -2,6 +2,14 @@
 
 ## Estado actual
 
+- **Fase 4B completada — Pomodoro: Temporizador resiliente y control de sesión (23-nov)**:
+  - Componente `PomodoroTimer` con selector de modalidad (Foco, Descanso corto, Descanso largo), dígitos tabulares (`font-variant-numeric: tabular-nums`) grandes, controles táctiles (≥44×44 px) de inicio/pausa/reanudación/reinicio/salto, e indicador de 4 pomodoros hacia el descanso largo (`● ● ○ ○` con texto accesible).
+  - Configuración mediante engranaje (⚙) en cabecera con sheet inferior `PomodoroSettingsSheet`: duraciones ajustables y auto-start de descansos, persistidos en `localStorage` con fallback seguro a defaults.
+  - Resiliencia ante suspensión en iOS mediante listeners de `visibilitychange` y `focus` que recalculan de inmediato por marcas de tiempo (`targetEndAt`).
+  - Helper defensivo de Screen Wake Lock (`src/lib/wakeLock.ts`) con solicitud en foco y liberación al pausar/completar o en entornos sin soporte.
+  - Helper defensivo de Web Audio API (`src/lib/sound.ts`) con oscilador sintético de doble tono (~587Hz -> ~880Hz) sin archivos de audio externos.
+  - Registro automático en Dexie de sesiones completadas (`db.pomodoroSessions`) con vínculo a la tarea actual si está activa.
+  - 6 nuevas pruebas unitarias añadidas (88 pruebas pasando en total).
 - **Fase 4A completada — Datos, tipos y lógica pura (23-nov)**: Esquema Dexie v3 implementado con migración declarativa sin pérdida de datos v1 ni v2 (`tasks` y `pomodoroSessions`). Tipos `Task`, `PomodoroSession`, `PomodoroSettings`, `TaskPriority` ('low' | 'medium' | 'high'), `TaskStatus`, `PomodoroSessionType`. Lógica pura de tareas en `src/lib/tasks.ts` y lógica pura de Pomodoro en `src/lib/pomodoro.ts` (cálculo inmune a suspensión de iOS con marcas de tiempo `targetEndAt`, pausas acumuladas sin desfase, salto temporal simulado de 25 min, ciclos de 4 pomodoros y `autoStartBreaks`). 21 nuevas pruebas unitarias añadidas (82 pruebas en total pasando).
 - **Iconos en la barra de navegación integrados con Lucide (23-nov)**: Reemplazo de los puntos huecos en `BottomNav` y `SideNav` por iconos semánticos offline (`LayoutDashboard` para Inicio, `Wallet` para Finanzas, `Ellipsis` para Más) desde `lucide-react`. Tamaño 24px, strokeWidth uniforme de 2 y color con `currentColor`. Estado activo diferenciado de forma accesible sin depender solo del color (peso tipográfico 750 vs 500, opacidad y píldora indicadora `.nav-item__indicator` animada únicamente con `transform`/`opacity`). Accesibilidad garantizada con `aria-label`, `aria-current="page"`, `aria-hidden="true"` en iconos, hit area mínima de 44×44 px y safe areas de iOS respetadas. 4 pruebas unitarias añadidas (61 pruebas en total).
 - **Planificación de la Fase 4 — Tareas + Pomodoro ("To do") completada y ajustada con decisiones de usuario (23-nov)**: Especificación funcional, técnica y modelo de datos documentados en `docs/SPEC.md`; decisiones registradas en `docs/DECISIONS.md` (pestaña "To do", engranaje de configuración en pantalla, 3 niveles de prioridad Baja/Media/Alta, Web Audio API sintético, autoStartBreaks configurable y aceptación de suspensión en iOS); desglose en 4 subfases modulares y committeables (4A a 4D) con criterios de aceptación en `docs/TASKS.md`. Listo para arrancar la implementación en 4A sin tocar código en esta sesión.
@@ -69,19 +77,83 @@ Revisión con Impeccable/Taste (dial de movimiento bajo) y aplicación solo de a
 - Paso 2 cerrado: Finanzas tiene pestañas para Movimientos, Presupuesto y Cuentas. Presupuesto permite cambiar el día de inicio, editar total y límites por categoría, ver el estado de cada límite y copiar los valores activos del período anterior.
 - Último commit estable de implementación: `af74f6a` (`feat(finance): add budget controls and period setting`).
 
+## Plan de Implementación Fase 4 (Tareas + Pomodoro) — Paso 1: PLANEAR
+
+### Subfases pendientes identificadas
+- **Fase 4A**: Completada y verificada en sesión previa (esquema Dexie v3 con pruebas de migración v1/v2 intactos, tipos en `src/db/types.ts`, lógica pura en `src/lib/tasks.ts` y `src/lib/pomodoro.ts` con 21 pruebas unitarias pasando, total 82 pruebas).
+- **Fase 4B (Pendiente)**: Pomodoro: Temporizador resiliente y control de sesión.
+- **Fase 4C (Pendiente)**: Tareas: Lista, alta rápida y asignación de tarea actual.
+- **Fase 4D (Pendiente)**: Integración de pantalla combinada, navegación e Inicio.
+
+### Orden de ejecución
+1. **Fase 4B**: Pomodoro Timer + Wake Lock + Sonido sintético Web Audio API + Sheet de configuración.
+2. **Fase 4C**: Componentes de Tareas (`TaskItem`, `TaskList`, `TaskSheet`) con checkbox táctil, prioridades accesibles y tarea actual.
+3. **Fase 4D**: Integración completa en `TasksPage`, 4.ª pestaña "To do" en `Navigation`, tarjeta en `HomePage` y ajustes responsive.
+
+### Archivos por subfase
+- **4B**:
+  - `src/lib/wakeLock.ts` y `src/lib/wakeLock.test.ts`
+  - `src/lib/sound.ts` y `src/lib/sound.test.ts`
+  - `src/features/tasks/PomodoroTimer.tsx`
+  - `src/features/tasks/PomodoroSettingsSheet.tsx`
+  - `src/styles/index.css`
+- **4C**:
+  - `src/features/tasks/TaskItem.tsx`
+  - `src/features/tasks/TaskList.tsx`
+  - `src/features/tasks/TaskSheet.tsx`
+  - `src/styles/index.css`
+- **4D**:
+  - `src/features/tasks/TasksPage.tsx`
+  - `src/components/ui/Navigation.tsx` y `src/components/ui/Navigation.test.ts`
+  - `src/features/tasks/CurrentTaskCard.tsx`
+  - `src/App.tsx`
+  - `src/styles/index.css`
+
+### Riesgos identificados y mitigación
+1. **Migración de Dexie preservando Finanzas**:
+   - *Riesgo*: Corrupción o pérdida de tablas `accounts`, `transactions`, `categories`, `budgets`.
+   - *Mitigación*: El esquema v3 ya está definido declarativamente y verificado con prueba unitaria en `src/db/database.test.ts` que simula una base de datos v2 con cuentas y transacciones y valida su permanencia intacta tras migrar a v3.
+2. **Suspensión del temporizador en iOS**:
+   - *Riesgo*: `setInterval` se congela cuando Safari pasa a segundo plano o se apaga la pantalla, provocando desvíos en el tiempo restante.
+   - *Mitigación*: El tiempo se basa exclusivamente en marcas de tiempo (`targetEndAt = now + remainingMs`). Los listeners de `visibilitychange` y `focus` llaman de inmediato a `evaluateTimer(state, settings, Date.now())` al volver a primer plano para recalcular o completar la sesión sin desfase.
+3. **Bloqueo de Web Audio API en Safari iOS**:
+   - *Riesgo*: AudioContext bloqueado si no hay interacción previa del usuario.
+   - *Mitigación*: Desbloqueo silencioso o reanudación del AudioContext en el evento click/touch de inicio del temporizador.
+4. **Soporte dispar de Screen Wake Lock**:
+   - *Riesgo*: Falla en navegadores que no lo soportan o rechazo de permisos.
+   - *Mitigación*: Verificación `'wakeLock' in navigator` y captura defensiva con `try/catch`.
+5. **Accesibilidad para daltonismo**:
+   - *Riesgo*: Dependencia exclusiva de color para estados y prioridades.
+   - *Mitigación*: Prioridades etiquetadas con texto ("Baja", "Media", "Alta") y distintivos de forma; números tabulares; estados del temporizador con etiquetas explícitas.
+
+### Decisiones tomadas por el agente para preguntas abiertas
+1. **Icono de navegación para "To do"**: Usar `ListTodo` de `lucide-react` para la 4.ª pestaña en `BottomNav` y `SideNav`.
+2. **Sonido de finalización de Pomodoro**: Generador de tono sintético mediante Web Audio API en `src/lib/sound.ts` (tono de dos notas limpias ~587Hz y ~880Hz con envolvente suave en 300 ms, 0 dependencias externas).
+3. **Screen Wake Lock**: Solicitud automática solo mientras el temporizador está en estado `'running'` y fase `'focus'`. Liberación automática al pausar, terminar, saltar fase o desmontar el componente.
+4. **Almacenamiento de configuración de Pomodoro**: `localStorage` bajo la clave `'dashboard-pomodoro-settings'` usando `PomodoroSettings`, con fallback seguro a `DEFAULT_POMODORO_SETTINGS`.
+5. **Borrado de tareas**: Borrado lógico (`deletedAt`) con diálogo nativo `window.confirm` para confirmación inmediata sin dependencias adicionales.
+
+### Verificación de criterios de aceptación
+- `npm run test` (pruebas de wakeLock, sound, timer, tareas, navegación y migración).
+- `npm run lint` (ESLint estricto sin errores ni warnings).
+- `npm run build` (TypeScript estricto y Vite build limpio con assets de PWA intactos).
+- Verificación manual conceptual de responsive (390px vs 1024px), safe areas y controles >= 44x44 px.
+
 ## Siguiente fase
 
-- **Fase 4B — Pomodoro: Temporizador resiliente y control de sesión**:
-  - Componente `PomodoroTimer` con selector de modalidad (Foco, Descanso corto, Descanso largo).
-  - Botón de icono de engranaje (⚙) en cabecera que abre el sheet inferior de configuración (`PomodoroSettingsSheet`).
-  - Resiliencia a suspensión en iOS: listener de `visibilitychange` y `focus` que invoca la lógica de recálculo por timestamp al regresar al primer plano.
-  - Helpers defensivos de Screen Wake Lock (`src/lib/wakeLock.ts`) y Web Audio API (`src/lib/sound.ts`).
-  - Guardado automático de sesiones completadas en Dexie (`pomodoroSessions`).
+- **Fase 4C — Tareas: Lista, alta rápida y asignación de tarea actual**:
+  - Componentes `TaskItem`, `TaskList` y `TaskSheet`.
+  - Checkbox táctil (≥44×44 px) para completar/desmarcar tareas.
+  - Título, badges discretos de prioridad de 3 niveles (Baja/Media/Alta) legibles sin depender solo del color, fecha y contador de pomodoros.
+  - Acción de 1 toque para asignar tarea actual (`isCurrent: true`).
+  - Borrado lógico (`deletedAt`) con confirmación.
+  - Sheet inferior de alta y edición rápida (`TaskSheet`) con autofocus y chips de prioridad/fecha.
+  - Filtros por chip ("Pendientes" y "Completadas").
 
 ## Verificación
 
 ```text
-npm run test    # 82 pruebas
+npm run test    # 88 pruebas
 npm run lint
 npm run build
 ```

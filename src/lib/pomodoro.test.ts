@@ -1,14 +1,17 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import type { PomodoroSettings } from '../db/types'
 import {
   createInitialPomodoroState,
+  DEFAULT_POMODORO_SETTINGS,
   evaluateTimer,
   formatTimerDisplay,
   getPhaseDurationSeconds,
+  loadPomodoroSettings,
   pauseTimer,
   resetTimer,
   resolveNextPhase,
   resumeTimer,
+  savePomodoroSettings,
   setTimerPhase,
   skipToNextPhase,
   startTimer,
@@ -196,5 +199,29 @@ describe('pomodoro logic', () => {
     expect(evaluated.state.phase).toBe('shortBreak')
     expect(evaluated.state.status).toBe('completed') // In waiting state
     expect(evaluated.state.targetEndAt).toBeUndefined()
+  })
+
+  it('loads and saves settings to localStorage with fallback to defaults', () => {
+    const memory = new Map<string, string>()
+    const mockStorage = {
+      getItem: (key: string) => memory.get(key) ?? null,
+      setItem: (key: string, value: string) => memory.set(key, String(value)),
+      removeItem: (key: string) => memory.delete(key),
+      clear: () => memory.clear(),
+    }
+    vi.stubGlobal('localStorage', mockStorage)
+
+    expect(loadPomodoroSettings()).toEqual(DEFAULT_POMODORO_SETTINGS)
+
+    const updated: PomodoroSettings = {
+      focusMinutes: 50,
+      shortBreakMinutes: 10,
+      longBreakMinutes: 20,
+      longBreakInterval: 3,
+      autoStartBreaks: true,
+    }
+    savePomodoroSettings(updated)
+    expect(loadPomodoroSettings()).toEqual(updated)
+    vi.unstubAllGlobals()
   })
 })
